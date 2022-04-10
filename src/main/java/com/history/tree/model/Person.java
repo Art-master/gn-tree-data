@@ -1,19 +1,26 @@
-package com.history.tree.entities;
+package com.history.tree.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Person")
 public class Person {
 
+    @Id
+    @Column(name = "id")
     private Long id;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "first_name")
+    private String firstName;
 
-    @Id
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "patronymic")
+    private String patronymic;
+
 }
