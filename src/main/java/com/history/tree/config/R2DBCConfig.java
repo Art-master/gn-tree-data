@@ -12,7 +12,6 @@ import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -23,10 +22,7 @@ import org.springframework.r2dbc.connection.R2dbcTransactionManager;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
 import org.springframework.transaction.ReactiveTransactionManager;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 
 @Configuration
@@ -80,30 +76,15 @@ public class R2DBCConfig extends AbstractR2dbcConfiguration {
         var initializer = new ConnectionFactoryInitializer();
         initializer.setConnectionFactory(connectionFactory);
 
-        var connection = getConnection();
-        createSchema(connection);
-        updateDatabaseStructure(connection);
+        updateDatabaseStructure();
+
         return initializer;
     }
 
-    @SneakyThrows
-    private Connection getConnection() {
-        return DriverManager.getConnection(jdbcUrl, username, password);
-    }
-
-    private void createSchema(Connection connection) {
-        try (Statement statement = connection.createStatement()) {
-            statement.execute("CREATE SCHEMA IF NOT EXISTS " + schema);
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
-        }
-    }
-
-    private void updateDatabaseStructure(Connection connection) {
+    private void updateDatabaseStructure() {
         try {
+            var connection = DriverManager.getConnection(jdbcUrl, username, password);
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-            database.setDefaultSchemaName(schema);
-            database.setLiquibaseSchemaName(schema);
             final Liquibase liquibase = new Liquibase(changeLog, new ClassLoaderResourceAccessor(), database);
             liquibase.update(new Contexts(), new LabelExpression());
         } catch (Exception e) {

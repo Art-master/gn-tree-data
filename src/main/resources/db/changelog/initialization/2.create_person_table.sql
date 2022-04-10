@@ -7,7 +7,8 @@ create table if not exists person
     id                  bigserial not null primary key,
     name                varchar   not null,
     "first_name"        varchar   not null,
-    "last_name"         varchar   not null
+    "last_name"         varchar   not null,
+    "tree_id"           bigserial   not null
 );
 
 alter table person
