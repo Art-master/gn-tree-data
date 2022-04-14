@@ -1,32 +1,29 @@
 package com.history.tree.model;
 
-
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
 @Data
-@Table(name = "relationship")
+@Table("relationship")
 public class Relationship {
 
     @Id
-    @Column(name = "id")
+    @Column("id")
     private Long id;
 
-    @Column(name = "marriage_id")
+    @Column("marriage_id")
     private Long marriageId;
 
-    @Column(name = "person_id")
+    @Column("person_id")
     private Long personId;
 
-    @Column(name = "relation_person_id")
+    @Column("relation_person_id")
     private Long relationPersonId;
 
-    @Column(name = "relationship_type")
+    @Column("relationship_type")
     private int relationshipType;
 
 }

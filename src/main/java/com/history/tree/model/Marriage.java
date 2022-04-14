@@ -3,24 +3,22 @@ package com.history.tree.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
 @Data
-@Table(name = "marriage")
+@Table("marriage")
 public class Marriage {
 
     @Id
-    @Column(name = "id")
+    @Column("id")
     private Long id;
 
-    @Column(name = "date_start")
+    @Column("date_start")
     private String dateStart;
 
-    @Column(name = "date_end")
+    @Column("date_end")
     private String dateEnd;
 
 }

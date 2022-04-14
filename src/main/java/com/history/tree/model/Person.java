@@ -3,39 +3,39 @@ package com.history.tree.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
+import java.time.LocalDateTime;
+
 @Data
-@Table(name = "person")
+@Table("person")
 public class Person {
 
     @Id
-    @Column(name = "id")
+    @Column("id")
     private Long id;
 
-    @Column(name = "first_name")
+    @Column("first_name")
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column("last_name")
     private String lastName;
 
-    @Column(name = "patronymic")
+    @Column("patronymic")
     private String patronymic;
 
-    @Column(name = "tree_id")
+    @Column("tree_id")
     private String tree_id;
 
-    @Column(name = "gender")
-    private char gender;
+    @Column("gender")
+    private Character gender;
 
-    @Column(name = "birth_date")
-    private char birthDate;
+    @Column("birth_date")
+    private LocalDateTime birthDate;
 
-    @Column(name = "date_of_death")
-    private char dateOfDeath;
+    @Column("date_of_death")
+    private LocalDateTime dateOfDeath;
 
 }

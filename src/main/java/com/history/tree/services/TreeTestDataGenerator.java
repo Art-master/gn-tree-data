@@ -8,9 +8,14 @@ import com.history.tree.repositories.RelationshipRepository;
 import com.history.tree.repositories.TreeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -22,42 +27,47 @@ public class TreeTestDataGenerator {
     private final TreeRepository treeRepository;
     private final RelationshipRepository relationshipRepository;
 
-    private static final int MAX_ONE_GENDER_PEOPLE_COUNT = 1000;
+    private static final int MAX_ONE_GENDER_PEOPLE_COUNT = 50;
 
+    @Transactional
     public Mono<Tree> generate() {
         Tree tree = new Tree();
-        tree.setName("Test");
+        tree.setName("Дерево");
 
-        return treeRepository.save(tree).doOnNext((e) -> {
-            var malePersons = generateMalePersons();
-            var femalePersons = generateFemalePersons();
-            malePersons.addAll(femalePersons);
-            personRepository.saveAll(malePersons)
-                    .collectList()
-                    .doOnNext(persons -> {
-                        var mPersons = persons.stream().filter(p -> p.getGender() == 'M').collect(Collectors.toList());
-                        var fPersons = persons.stream().filter(p -> p.getGender() == 'F').collect(Collectors.toList());
-                        List<Relationship> relationships = getRelationships(mPersons, fPersons, 0);
-                        relationshipRepository.saveAll(relationships).subscribe();
-                    });
-        });
+        return treeRepository.save(tree)
+                .delayUntil((data) -> {
+                    var malePersons = generateMalePersons();
+                    var femalePersons = generateFemalePersons();
+                    malePersons.addAll(femalePersons);
+                    return personRepository.saveAll(malePersons)
+                            .collectList()
+                            .delayUntil((persons) -> {
+                                var mPersons = getPersonsByGender(persons, 'M');
+                                var fPersons = getPersonsByGender(persons, 'F');
+                                List<Relationship> relationships = getRelationships(mPersons, fPersons, 0);
+                                return relationshipRepository.saveAll(relationships);
+                            });
+                });
+    }
+
+    private List<Person> getPersonsByGender(List<Person> persons, char gender) {
+        return persons.stream().filter(p -> p.getGender() == gender).collect(Collectors.toList());
     }
 
     private List<Relationship> getRelationships(List<Person> mPersons, List<Person> fPersons, int count) {
 
-
-        var currentGroupCount = 4;
+        var currentGroupCount = 2;
 
         if (mPersons.size() == count) {
             return Collections.emptyList();
         }
         List<Person> relatives;
-        if (mPersons.size() >= count + currentGroupCount) {
+        if (count + currentGroupCount >= mPersons.size()) {
             relatives = mPersons.subList(count, mPersons.size() - 1);
             relatives.addAll(fPersons.subList(count, fPersons.size() - 1));
         } else {
-            relatives = mPersons.subList(count, currentGroupCount / 2);
-            relatives.addAll(mPersons.subList(count, currentGroupCount / 2));
+            relatives = mPersons.subList(count, count + currentGroupCount);
+            relatives.addAll(mPersons.subList(count, count + currentGroupCount));
         }
 
         List<Relationship> relationship = new ArrayList<>();
@@ -71,8 +81,9 @@ public class TreeTestDataGenerator {
         marriage.setRelationPersonId(mather.getId());
         marriage.setRelationshipType(1); //Marriage
 
-        count = count + currentGroupCount;
+        count = count + (currentGroupCount * 2);
         int finalCount = count;
+
         relatives.forEach(r -> {
             var relation = new Relationship();
             relation.setPersonId(r.getId());
@@ -89,7 +100,7 @@ public class TreeTestDataGenerator {
         var lastNames = Arrays.asList("Коченев", "Польской", "Мельников", "Догов", "Литовский", "Исанов", "Сергеев");
         var patonymics = Arrays.asList("Иванович", "Сергеевич", "Андреевич", "Николаевич", "Григорьевич", "Евгеньевич");
 
-        return generatePersons(names, lastNames, patonymics);
+        return generatePersons(names, lastNames, patonymics, 'M');
     }
 
     private List<Person> generateFemalePersons() {
@@ -97,10 +108,10 @@ public class TreeTestDataGenerator {
         var lastNames = Arrays.asList("Коченева", "Польская", "Мельникова", "Догова", "Литовская", "Иванова", "Сергеева");
         var patonymics = Arrays.asList("Ивановна", "Сергеевна", "Андреевна", "Николаевна", "Григорьевна", "Евгеньевна");
 
-        return generatePersons(names, lastNames, patonymics);
+        return generatePersons(names, lastNames, patonymics, 'F');
     }
 
-    private List<Person> generatePersons(List<String> names, List<String> lastNames, List<String> patonymics) {
+    private List<Person> generatePersons(List<String> names, List<String> lastNames, List<String> patonymics, Character gender) {
         var persons = new ArrayList<Person>(MAX_ONE_GENDER_PEOPLE_COUNT);
 
         IntStream.range(0, 1000).forEach(e -> {
@@ -114,10 +125,21 @@ public class TreeTestDataGenerator {
             random = new Random().nextInt(patonymics.size() - 1);
             person.setPatronymic(patonymics.get(random));
 
-            person.setFirstName("");
+            person.setGender(gender);
+
+            person.setBirthDate(getRandomDate());
+
             persons.add(person);
         });
 
         return persons;
     }
+
+    private LocalDateTime getRandomDate() {
+        long minDay = LocalDate.of(1970, 1, 1).toEpochDay();
+        long maxDay = LocalDate.of(2015, 12, 31).toEpochDay();
+        long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
+        return LocalDateTime.of(LocalDate.ofEpochDay(randomDay), LocalTime.now());
+    }
+
 }
