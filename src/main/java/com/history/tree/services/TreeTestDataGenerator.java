@@ -10,12 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -35,6 +35,7 @@ public class TreeTestDataGenerator {
         tree.setName("Дерево");
 
         return treeRepository.save(tree)
+                .subscribeOn(Schedulers.boundedElastic())
                 .delayUntil((data) -> {
                     var malePersons = generateMalePersons();
                     var femalePersons = generateFemalePersons();
@@ -44,7 +45,7 @@ public class TreeTestDataGenerator {
                             .delayUntil((persons) -> {
                                 var mPersons = getPersonsByGender(persons, 'M');
                                 var fPersons = getPersonsByGender(persons, 'F');
-                                List<Relationship> relationships = getRelationships(mPersons, fPersons, 0);
+                                List<Relationship> relationships = getRelationships(mPersons, fPersons, new AtomicInteger(0));
                                 return relationshipRepository.saveAll(relationships);
                             });
                 });
@@ -54,42 +55,42 @@ public class TreeTestDataGenerator {
         return persons.stream().filter(p -> p.getGender() == gender).collect(Collectors.toList());
     }
 
-    private List<Relationship> getRelationships(List<Person> mPersons, List<Person> fPersons, int count) {
+    private List<Relationship> getRelationships(List<Person> mPersons, List<Person> fPersons, AtomicInteger count) {
 
         var currentGroupCount = 2;
 
-        if (mPersons.size() == count) {
+        if (count.get() >= mPersons.size()) {
             return Collections.emptyList();
         }
-        List<Person> relatives;
-        if (count + currentGroupCount >= mPersons.size()) {
-            relatives = mPersons.subList(count, mPersons.size() - 1);
-            relatives.addAll(fPersons.subList(count, fPersons.size() - 1));
+        List<Person> relatives = new ArrayList<>(currentGroupCount * 2);
+        if (count.get() + currentGroupCount >= mPersons.size()) {
+            relatives.addAll(mPersons.subList(count.get(), mPersons.size() - 1));
+            relatives.addAll(fPersons.subList(count.get(), fPersons.size() - 1));
         } else {
-            relatives = mPersons.subList(count, count + currentGroupCount);
-            relatives.addAll(mPersons.subList(count, count + currentGroupCount));
+            relatives.addAll(mPersons.subList(count.get(), count.get() + currentGroupCount));
+            relatives.addAll(fPersons.subList(count.get(), count.get() + currentGroupCount));
         }
 
-        List<Relationship> relationship = new ArrayList<>();
-
-
-        Person father = relatives.remove(0);
-        Person mather = relatives.remove(relatives.size() - 1);
+        Person father = relatives.get(0);
+        Person mather = relatives.get(relatives.size() - 1);
 
         var marriage = new Relationship();
         marriage.setPersonId(father.getId());
         marriage.setRelationPersonId(mather.getId());
         marriage.setRelationshipType(1); //Marriage
 
-        count = count + (currentGroupCount * 2);
-        int finalCount = count;
+        count.set(count.get() + currentGroupCount);
 
-        relatives.forEach(r -> {
+        List<Relationship> relationship = new ArrayList<>();
+        relationship.add(marriage);
+
+        relatives.subList(1, relatives.size() - 1).forEach(r -> {
             var relation = new Relationship();
             relation.setPersonId(r.getId());
             relation.setRelationPersonId(r.getId());
             relation.setRelationshipType(2); //Children
-            relationship.addAll(getRelationships(mPersons, fPersons, finalCount));
+            relationship.add(relation);
+            relationship.addAll(getRelationships(mPersons, fPersons, count));
         });
 
         return relationship;
@@ -135,11 +136,11 @@ public class TreeTestDataGenerator {
         return persons;
     }
 
-    private LocalDateTime getRandomDate() {
+    private LocalDate getRandomDate() {
         long minDay = LocalDate.of(1970, 1, 1).toEpochDay();
         long maxDay = LocalDate.of(2015, 12, 31).toEpochDay();
         long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
-        return LocalDateTime.of(LocalDate.ofEpochDay(randomDay), LocalTime.now());
+        return LocalDate.ofEpochDay(randomDay);
     }
 
 }
