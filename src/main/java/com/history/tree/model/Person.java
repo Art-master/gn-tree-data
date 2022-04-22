@@ -1,42 +1,48 @@
 package com.history.tree.model;
 
 
-import lombok.Data;
-import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import net.lecousin.reactive.data.relational.annotations.ForeignTable;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@Table(name = "person")
+@Getter
+@Setter
+@Table("person")
 public class Person {
 
     @Id
-    @Column(name ="id")
+    @Column("id")
     private Long id;
 
-    @Column(name ="first_name")
+    @Column("first_name")
     private String firstName;
 
-    @Column(name ="last_name")
+    @Column("last_name")
     private String lastName;
 
-    @Column(name ="patronymic")
+    @Column("patronymic")
     private String patronymic;
 
-    @Column(name ="tree_id")
+    @Column("tree_id")
     private Long treeId;
 
-    @Column(name ="gender")
+    @Column("gender")
     private Character gender;
 
-    @Column(name ="birth_date")
+    @Column("birth_date")
     private LocalDate birthDate;
 
-    @Column(name ="date_of_death")
+    @Column("date_of_death")
     private LocalDate dateOfDeath;
 
-    private Set<Relationship> relationships = new HashSet<>();
+    @ForeignTable(joinKey = "person_id")
+    private Set<Relationship> relationships;
 
 }

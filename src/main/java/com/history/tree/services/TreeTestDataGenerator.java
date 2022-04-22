@@ -34,7 +34,7 @@ public class TreeTestDataGenerator {
         Tree tree = new Tree();
         tree.setName("Дерево");
 
-        return treeRepository.save(tree)
+/*        return treeRepository.save(tree)
                 .subscribeOn(Schedulers.boundedElastic())
                 .delayUntil((data) -> {
                     var malePersons = generateMalePersons();
@@ -48,7 +48,8 @@ public class TreeTestDataGenerator {
                                 List<Relationship> relationships = getRelationships(mPersons, fPersons, new AtomicInteger(0));
                                 return relationshipRepository.saveAll(relationships);
                             });
-                });
+                });*/
+        return null;
     }
 
     private List<Person> getPersonsByGender(List<Person> persons, char gender) {
@@ -75,7 +76,7 @@ public class TreeTestDataGenerator {
         Person mather = relatives.get(relatives.size() - 1);
 
         var marriage = new Relationship();
-        marriage.setPersonId(father.getId());
+        //marriage.setPersonId(father.getId());
         marriage.setRelationPersonId(mather.getId());
         marriage.setRelationshipType(1); //Marriage
 
@@ -86,7 +87,7 @@ public class TreeTestDataGenerator {
 
         relatives.subList(1, relatives.size() - 1).forEach(r -> {
             var relation = new Relationship();
-            relation.setPersonId(r.getId());
+            //relation.setPersonId(r.getId());
             relation.setRelationPersonId(r.getId());
             relation.setRelationshipType(2); //Children
             relationship.add(relation);

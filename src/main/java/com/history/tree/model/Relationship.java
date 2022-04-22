@@ -1,12 +1,14 @@
 package com.history.tree.model;
 
-import lombok.Data;
-
+import lombok.Getter;
+import lombok.Setter;
+import net.lecousin.reactive.data.relational.annotations.ForeignKey;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Data
+@Getter
+@Setter
 @Table("relationship")
 public class Relationship {
 
@@ -18,7 +20,8 @@ public class Relationship {
     private Long marriageId;
 
     @Column("person_id")
-    private Long personId;
+    @ForeignKey
+    private Person personId;
 
     @Column("relation_person_id")
     private Long relationPersonId;

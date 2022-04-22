@@ -1,0 +1,5 @@
+entities:
+  - com.history.tree.model:
+      - Person
+      - Relationship
+      - Tree
