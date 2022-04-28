@@ -3,8 +3,6 @@ package com.history.tree.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 public class PersonDTO {
@@ -24,6 +22,4 @@ public class PersonDTO {
     private LocalDate birthDate;
 
     private LocalDate dateOfDeath;
-
-    private Set<RelationshipDTO> relationships = new HashSet<>();
 }

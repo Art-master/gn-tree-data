@@ -1,6 +1,7 @@
 package com.history.tree.services;
 
-import com.history.tree.model.Person;
+import com.history.tree.dto.PersonDTO;
+import com.history.tree.mappers.PersonMapper;
 import com.history.tree.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,12 @@ public class PersonService {
 
     private final PersonRepository repository;
 
-    public Mono<Person> findById(long id) {
-        return repository.findById(id);
+    public Mono<PersonDTO> findById(long id) {
+        return repository.findById(id).map(PersonMapper.INSTANCE::personToDto);
     }
 
-    public Flux<Person> getPersonsByTreeId(long treeId) {
-        return repository.findAllByTreeId(treeId);
+    public Flux<PersonDTO> getPersonsByTreeId(long treeId) {
+        return repository.findAllByTreeId(treeId).map(PersonMapper.INSTANCE::personToDto);
     }
 
 }

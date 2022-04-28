@@ -1,5 +1,6 @@
 package com.history.tree.controllers;
 
+import com.history.tree.dto.PersonDTO;
 import com.history.tree.model.Person;
 import com.history.tree.services.PersonService;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +19,12 @@ public class PersonController {
     private final PersonService personService;
 
     @GetMapping()
-    public Mono<Person> getById(@RequestParam Long id) {
+    public Mono<PersonDTO> getById(@RequestParam Long id) {
         return personService.findById(id);
     }
 
     @GetMapping("get_by_tree")
-    public Flux<Person> getAllByTreeId(@RequestParam Long treeId) {
+    public Flux<PersonDTO> getAllByTreeId(@RequestParam Long treeId) {
         return personService.getPersonsByTreeId(treeId);
     }
 }

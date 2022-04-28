@@ -36,9 +36,9 @@ public class TreeTestDataGenerator {
 
         return treeRepository.save(tree)
                 .subscribeOn(Schedulers.boundedElastic())
-                .delayUntil((data) -> {
-                    var malePersons = generateMalePersons();
-                    var femalePersons = generateFemalePersons();
+                .delayUntil((savedTree) -> {
+                    var malePersons = generateMalePersons(savedTree);
+                    var femalePersons = generateFemalePersons(savedTree);
                     malePersons.addAll(femalePersons);
                     return personRepository.saveAll(malePersons)
                             .collectList()
@@ -75,7 +75,7 @@ public class TreeTestDataGenerator {
         Person mather = relatives.get(relatives.size() - 1);
 
         var marriage = new Relationship();
-        //marriage.setPersonId(father.getId());
+        marriage.setPersonId(father.getId());
         marriage.setRelationPersonId(mather.getId());
         marriage.setRelationshipType(1); //Marriage
 
@@ -86,45 +86,49 @@ public class TreeTestDataGenerator {
 
         relatives.subList(1, relatives.size() - 1).forEach(r -> {
             var relation = new Relationship();
-            //relation.setPersonId(r.getId());
+            relation.setPersonId(r.getId());
             relation.setRelationPersonId(r.getId());
             relation.setRelationshipType(2); //Children
+
             relationship.add(relation);
+
             relationship.addAll(getRelationships(mPersons, fPersons, count));
         });
 
         return relationship;
     }
 
-    private List<Person> generateMalePersons() {
+    private List<Person> generateMalePersons(Tree tree) {
         var names = Arrays.asList("Василий", "Иван", "Семен", "Александр", "Денис", "Тимофей");
         var lastNames = Arrays.asList("Коченев", "Польской", "Мельников", "Догов", "Литовский", "Исанов", "Сергеев");
         var patonymics = Arrays.asList("Иванович", "Сергеевич", "Андреевич", "Николаевич", "Григорьевич", "Евгеньевич");
 
-        return generatePersons(names, lastNames, patonymics, 'M');
+        return generatePersons(tree, names, lastNames, patonymics, 'M');
     }
 
-    private List<Person> generateFemalePersons() {
+    private List<Person> generateFemalePersons(Tree tree) {
         var names = Arrays.asList("Василиса", "Нелли", "Мария", "Таисия", "Селина", "Наталья");
         var lastNames = Arrays.asList("Коченева", "Польская", "Мельникова", "Догова", "Литовская", "Иванова", "Сергеева");
         var patonymics = Arrays.asList("Ивановна", "Сергеевна", "Андреевна", "Николаевна", "Григорьевна", "Евгеньевна");
 
-        return generatePersons(names, lastNames, patonymics, 'F');
+        return generatePersons(tree, names, lastNames, patonymics, 'F');
     }
 
-    private List<Person> generatePersons(List<String> names, List<String> lastNames, List<String> patonymics, Character gender) {
+    private List<Person> generatePersons(Tree tree, List<String> names, List<String> lastNames, List<String> patronymics, Character gender) {
         var persons = new ArrayList<Person>(MAX_ONE_GENDER_PEOPLE_COUNT);
 
         IntStream.range(0, 1000).forEach(e -> {
             var random = new Random().nextInt(names.size() - 1);
             var person = new Person();
+
+            person.setTreeId(tree.getId());
             person.setFirstName(names.get(random));
 
             random = new Random().nextInt(lastNames.size() - 1);
             person.setLastName(lastNames.get(random));
 
-            random = new Random().nextInt(patonymics.size() - 1);
-            person.setPatronymic(patonymics.get(random));
+            random = new Random().nextInt(patronymics.size() - 1);
+            person.setPatronymic(patronymics.get(random));
 
             person.setGender(gender);
 

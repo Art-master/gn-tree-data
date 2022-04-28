@@ -17,7 +17,7 @@ public class MarriageService {
         return repository.findById(id);
     }
 
-    public Flux<Marriage> getPersonsByTreeId(long treeId) {
+    public Flux<Marriage> getByTreeId(long treeId) {
         return repository.findRelationshipsByTree(treeId);
     }
 
