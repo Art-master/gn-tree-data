@@ -4,13 +4,11 @@ package com.history.tree.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import net.lecousin.reactive.data.relational.annotations.ForeignTable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -41,8 +39,5 @@ public class Person {
 
     @Column("date_of_death")
     private LocalDate dateOfDeath;
-
-    @ForeignTable(joinKey = "person_id")
-    private Set<Relationship> relationships;
 
 }

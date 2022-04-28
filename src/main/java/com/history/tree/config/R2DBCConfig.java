@@ -13,11 +13,10 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.extern.slf4j.Slf4j;
-import net.lecousin.reactive.data.relational.postgres.PostgresConfiguration;
-import net.lecousin.reactive.data.relational.repository.LcR2dbcRepositoryFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import org.springframework.r2dbc.connection.R2dbcTransactionManager;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
@@ -28,8 +27,8 @@ import java.sql.DriverManager;
 
 @Configuration
 @Slf4j
-@EnableR2dbcRepositories(value = "com.core.app.repository", repositoryFactoryBeanClass = LcR2dbcRepositoryFactoryBean.class)
-public class R2DBCConfig extends PostgresConfiguration {
+@EnableR2dbcRepositories(value = "com.core.app.repository")
+public class R2DBCConfig extends AbstractR2dbcConfiguration {
 
     @Value("${spring.r2dbc.properties.host}")
     private String host;

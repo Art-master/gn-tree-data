@@ -2,7 +2,6 @@ package com.history.tree.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.lecousin.reactive.data.relational.annotations.ForeignKey;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -20,8 +19,7 @@ public class Relationship {
     private Long marriageId;
 
     @Column("person_id")
-    @ForeignKey
-    private Person personId;
+    private Long personId;
 
     @Column("relation_person_id")
     private Long relationPersonId;

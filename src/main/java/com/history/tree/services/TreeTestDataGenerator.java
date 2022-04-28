@@ -34,7 +34,7 @@ public class TreeTestDataGenerator {
         Tree tree = new Tree();
         tree.setName("Дерево");
 
-/*        return treeRepository.save(tree)
+        return treeRepository.save(tree)
                 .subscribeOn(Schedulers.boundedElastic())
                 .delayUntil((data) -> {
                     var malePersons = generateMalePersons();
@@ -48,8 +48,7 @@ public class TreeTestDataGenerator {
                                 List<Relationship> relationships = getRelationships(mPersons, fPersons, new AtomicInteger(0));
                                 return relationshipRepository.saveAll(relationships);
                             });
-                });*/
-        return null;
+                });
     }
 
     private List<Person> getPersonsByGender(List<Person> persons, char gender) {
