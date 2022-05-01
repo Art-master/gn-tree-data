@@ -1,16 +1,35 @@
 package com.history.tree.controllers;
 
-import com.history.tree.model.Tree;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.history.tree.dto.TreeDTO;
+import com.history.tree.services.TreeService;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/tree")
+@AllArgsConstructor
+@RequestMapping("/trees")
 public class TreeController {
 
+    private final TreeService treeService;
+
     @GetMapping()
-    public Tree getById() {
-        return new Tree();
+    public Mono<TreeDTO> getById(@RequestParam Long id) {
+        return treeService.findById(id);
+    }
+
+    @GetMapping("get_by_user")
+    public Mono<TreeDTO> getAllByUserId(@RequestParam Long id) {
+        return treeService.findById(id);
+    }
+
+    @PostMapping()
+    public Mono<TreeDTO> create(@RequestBody TreeDTO tree) {
+        return treeService.create(tree);
+    }
+
+    @DeleteMapping
+    public Mono<Void> delete(@RequestParam Long id) {
+        return treeService.delete(id);
     }
 }
