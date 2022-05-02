@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/persons")
+@RequestMapping(value = "/persons", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 public class PersonController {
 
     private final PersonService personService;

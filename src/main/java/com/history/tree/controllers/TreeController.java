@@ -4,6 +4,7 @@ import com.history.tree.dto.TreeDTO;
 import com.history.tree.services.TreeService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -19,8 +20,8 @@ public class TreeController {
     }
 
     @GetMapping("get_by_user")
-    public Mono<TreeDTO> getAllByUserId(@RequestParam Long id) {
-        return treeService.findById(id);
+    public Flux<TreeDTO> getAllByUserId(@RequestParam Long id) {
+        return treeService.findAllByUserId(id);
     }
 
     @PostMapping()

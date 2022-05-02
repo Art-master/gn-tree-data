@@ -19,6 +19,10 @@ public class TreeService {
         return repository.findById(id).map(TreeMapper.INSTANCE::entityToDTO);
     }
 
+    public Flux<TreeDTO> findAllByUserId(long id) {
+        return repository.findAll().map(TreeMapper.INSTANCE::entityToDTO);
+    }
+
     public Flux<TreeDTO> findAll() {
         return repository.findAll().map(TreeMapper.INSTANCE::entityToDTO);
     }
