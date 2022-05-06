@@ -37,11 +37,11 @@ class TreeApplicationTests {
     @Test
     void contextLoads() {
         //var entityManager = factory.createEntityManager();
-        generator.generate().subscribe(e1 -> {
+/*        generator.generate().subscribe(e1 -> {
             personRepository.findAllByTreeId(47L).doOnNext(e -> {
                 System.out.println(e.getId());
             }).subscribe();
-        });
+        });*/
     }
 
 }
