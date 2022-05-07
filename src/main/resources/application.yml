@@ -1,0 +1,52 @@
+logging:
+    level:
+        liquibase: info
+        root: DEBUG
+server:
+    address: 0.0.0.0
+    error:
+        include-message: always
+    port: ${APP_PORT:8080}
+spring:
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    jwk-set-uri: ${KEYCLOAK_REALM_CERT_URL:http://localhost:8484/auth/realms/my_realm/protocol/openid-connect/certs}
+    batch:
+        jdbc:
+            initialize-schema: always
+    data:
+        r2dbc:
+            repositories:
+                enabled: true
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        password: ${DB_PASSWORD}
+        url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+        username: ${DB_USER}
+    jpa:
+        properties:
+            hibernate:
+                default_schema: ${DB_SCHEMA:public}
+    liquibase:
+        change-log: classpath:db/changelog/root.xml
+        default-schema: ${DB_SCHEMA}
+        driver-class-name: org.postgresql.Driver
+    main:
+        allow-bean-definition-overriding: true
+    r2dbc:
+        name: ${DB_NAME}
+        password: ${DB_PASSWORD}
+        pool:
+            enabled: true
+            initial-size: 10
+            max-idle-time: 1m
+            max-size: 50
+        properties:
+            errorResponseLogLevel: DEBUG
+            host: ${DB_HOST}
+            port: ${DB_PORT}
+            schema: ${DB_SCHEMA:public}
+        url: r2dbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+        username: ${DB_USER}

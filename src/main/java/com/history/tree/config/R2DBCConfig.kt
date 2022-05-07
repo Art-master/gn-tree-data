@@ -11,6 +11,8 @@ import liquibase.Liquibase
 import liquibase.database.DatabaseFactory
 import liquibase.database.jvm.JdbcConnection
 import liquibase.resource.ClassLoaderResourceAccessor
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -24,6 +26,8 @@ import java.sql.DriverManager
 @Configuration
 @EnableR2dbcRepositories(value = ["com.core.app.repository"])
 class R2DBCConfig : AbstractR2dbcConfiguration() {
+
+    private val log: Logger = LoggerFactory.getLogger(R2DBCConfig::class.java.name)
 
     @Value("\${spring.r2dbc.properties.host}")
     private lateinit var host: String
@@ -63,7 +67,7 @@ class R2DBCConfig : AbstractR2dbcConfiguration() {
                 .option(ConnectionFactoryOptions.PASSWORD, password)
                 .option(ConnectionFactoryOptions.DATABASE, database)
                 .option(PoolingConnectionFactoryProvider.MAX_SIZE, maxPoolSize.toInt())
-                .option(Option.valueOf<String?>("schema"), schema)
+                .option(Option.valueOf("schema"), schema)
                 .build()
         )
     }
@@ -88,7 +92,7 @@ class R2DBCConfig : AbstractR2dbcConfiguration() {
             val liquibase = Liquibase(changeLog, ClassLoaderResourceAccessor(), database)
             liquibase.update(Contexts(), LabelExpression())
         } catch (e: Exception) {
-            //log.error(e.message, e)
+            log.error(e.message, e)
         }
     }
 }
