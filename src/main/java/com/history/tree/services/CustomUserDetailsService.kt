@@ -1,9 +1,13 @@
 package com.history.tree.services
 
+import com.history.tree.mappers.UserMapper
 import com.history.tree.repositories.UserRepository
 import com.history.tree.repositories.UserRoleRepository
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import org.mapstruct.factory.Mappers
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -25,7 +29,16 @@ class CustomUserDetailsService(
                     it.error(UsernameNotFoundException("User not found by login"))
                 } else {
                     val roles = userRoleRepository.findByUserId(user.id)
-                    it.success(user as UserDetails)
+                        .map { it.name }
+                        .toList()
+
+                    val mapper = Mappers.getMapper(UserMapper::class.java)
+                    val userDto = mapper.entityToDTO(user).apply {
+                        this.authorities = roles
+                        this.password = user.password
+                    }
+
+                    it.success(userDto as UserDetails)
                 }
             }
         }

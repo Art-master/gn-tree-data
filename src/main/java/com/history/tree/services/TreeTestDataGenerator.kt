@@ -3,10 +3,11 @@ package com.history.tree.services
 import com.history.tree.model.Person
 import com.history.tree.model.Relationship
 import com.history.tree.model.Tree
-import com.history.tree.repositories.PersonRepository
-import com.history.tree.repositories.RelationshipRepository
-import com.history.tree.repositories.TreeRepository
+import com.history.tree.model.User
+import com.history.tree.repositories.*
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -20,8 +21,15 @@ import java.util.stream.IntStream
 class TreeTestDataGenerator(
     val personRepository: PersonRepository,
     val treeRepository: TreeRepository,
-    val relationshipRepository: RelationshipRepository
+    val relationshipRepository: RelationshipRepository,
+    val userRepository: UserRepository,
+    val userRoleRepository: UserRoleRepository,
+    val passwordEncoder: PasswordEncoder,
 ) {
+
+    companion object {
+        private const val MAX_ONE_GENDER_PEOPLE_COUNT = 50
+    }
 
 
     private val randomDate: LocalDate
@@ -140,7 +148,20 @@ class TreeTestDataGenerator(
         return persons
     }
 
-    companion object {
-        private const val MAX_ONE_GENDER_PEOPLE_COUNT = 50
+    fun createTestsUsers(): Flow<User> {
+        val user = User().apply {
+            name = "user"
+            login = "user@mail.ru"
+            password = passwordEncoder.encode("user")
+
+        }
+
+        val userAdmin = User().apply {
+            name = "admin"
+            login = "admin@mail.ru"
+            password = passwordEncoder.encode("admin")
+        }
+
+        return userRepository.saveAll(listOf(userAdmin, user))
     }
 }

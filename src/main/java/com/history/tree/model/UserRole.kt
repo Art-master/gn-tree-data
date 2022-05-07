@@ -16,6 +16,6 @@ class UserRole {
     var name: String = ""
 
     @Column(UserRoleSchema.USER_ID)
-    var userId: String = ""
+    var userId: Long = 0
 
 }

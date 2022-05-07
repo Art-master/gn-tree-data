@@ -15,12 +15,13 @@ class UserDTO : UserDetails {
 
     private var password: String = ""
     override fun getPassword() = password
+    fun setPassword(password: String) = { this.password = password }
 
     var avatarId: Long = 0
 
     var lang: String = Locale.getDefault().toLanguageTag()
 
-    val authorities: List<String> = emptyList()
+    var authorities: List<String> = emptyList()
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableListOf()
     }
