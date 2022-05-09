@@ -14,8 +14,12 @@ class UserDTO : UserDetails {
     override fun getUsername() = login
 
     private var password: String = ""
+
     override fun getPassword() = password
-    fun setPassword(password: String) = { this.password = password }
+
+    fun setPassword(password: String) {
+        this.password = password
+    }
 
     var avatarId: Long = 0
 

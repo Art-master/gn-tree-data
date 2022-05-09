@@ -1,7 +1,7 @@
 package com.history.tree.config
 
 import com.google.gson.GsonBuilder
-import com.history.tree.services.CustomUserDetailsService
+import com.history.tree.services.DatabaseUserDetailsService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.configurationprocessor.json.JSONObject
@@ -19,18 +19,24 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser
+import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.oauth2.jwt.Jwt
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoders
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter
 import org.springframework.security.web.server.SecurityWebFilterChain
 import reactor.core.publisher.Mono
-import java.lang.RuntimeException
 
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-class WebSecurityConfiguration(private val userDetailsService: CustomUserDetailsService) {
+class WebSecurityConfiguration(private val userDetailsService: DatabaseUserDetailsService) {
 
     private val log: Logger = LoggerFactory.getLogger(WebSecurityConfiguration::class.java.name)
 
@@ -47,17 +53,22 @@ class WebSecurityConfiguration(private val userDetailsService: CustomUserDetails
                         .pathMatchers("/debug/**").permitAll()
                         .anyExchange().authenticated()
                         .and()
-                        .formLogin().disable().httpBasic().and()
+                        .formLogin().disable().httpBasic().disable()
                         .csrf().disable()
                 }
-                .authenticationManager(reactiveAuthenticationManager())
+                //.authenticationManager(reactiveAuthenticationManager())
                 .oauth2ResourceServer { resourceServerConfigurer ->
                     resourceServerConfigurer
                         .jwt { jwtConfigurer ->
-                            jwtConfigurer
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                            jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter())
                         }
                 }
+                .oauth2Login { oauth2Login ->
+                    oauth2Login.authenticationMatcher { userInfoEndpoint ->
+                            userInfoEndpoint.oidcUserService(this.oidcUserService())
+                        }
+                }
+
                 .build()
         } else http.authorizeExchange()
             .anyExchange()
@@ -67,6 +78,30 @@ class WebSecurityConfiguration(private val userDetailsService: CustomUserDetails
     }
 
     @Bean
+    fun jwtDecoder(): ReactiveJwtDecoder? {
+        return ReactiveJwtDecoders.fromIssuerLocation("http://localhost:8484/auth/realms/my_realm")
+    }
+
+
+    @Bean
+    fun oidcUserService(): OAuth2UserService<OidcUserRequest?, OidcUser>? {
+        val delegate = OidcUserService()
+        return OAuth2UserService { userRequest: OidcUserRequest? ->
+            val oidcUser = delegate.loadUser(userRequest)
+            val claims = oidcUser.claims
+            val groups = claims["groups"] as String?
+
+            val gson = GsonBuilder().create()
+            val list = gson.fromJson(groups, Array<SimpleGrantedAuthority>::class.java).toList()
+            val keycloakAuthorities: List<SimpleGrantedAuthority> = list.map { role ->
+                SimpleGrantedAuthority("ROLE_$role")
+            }
+
+            DefaultOidcUser(keycloakAuthorities, oidcUser.idToken, oidcUser.userInfo)
+        }
+    }
+
+    //@Bean
     protected fun reactiveAuthenticationManager(): ReactiveAuthenticationManager? {
         return ReactiveAuthenticationManager { authentication: Authentication ->
             try {
@@ -87,10 +122,8 @@ class WebSecurityConfiguration(private val userDetailsService: CustomUserDetails
         if (login.isEmpty()) throw RuntimeException("Login must be not empty")
         if (credentials.isEmpty()) throw RuntimeException("Password must be not empty")
 
-        val encodedCredentials = passwordEncoder().encode(credentials)
-
         return userDetailsService.findByUsername(authentication.principal as String)!!.map {
-            if (it.password != encodedCredentials) {
+            if (passwordEncoder().matches(credentials, it.password).not()) {
                 throw RuntimeException("Incorrect password")
             }
             UsernamePasswordAuthenticationToken(it.username, "", it.authorities)

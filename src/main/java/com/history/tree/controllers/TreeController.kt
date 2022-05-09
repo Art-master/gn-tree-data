@@ -3,6 +3,7 @@ package com.history.tree.controllers
 import com.history.tree.dto.TreeDTO
 import com.history.tree.services.TreeService
 import kotlinx.coroutines.flow.Flow
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -10,11 +11,13 @@ import org.springframework.web.bind.annotation.*
 class TreeController(val treeService: TreeService) {
 
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     suspend fun getById(@RequestParam id: Long): TreeDTO {
         return treeService.findById(id)
     }
 
     @GetMapping("get_by_user")
+    @PreAuthorize("hasRole('USER')")
     suspend fun getAllByUserId(@RequestParam id: Long): Flow<TreeDTO> {
         return treeService.findAllByUserId(id)
     }
