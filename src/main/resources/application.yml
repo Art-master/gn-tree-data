@@ -1,71 +1,69 @@
 logging:
-    level:
-        liquibase: info
-        root: DEBUG
+  level:
+    root: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.boot.autoconfigure: DEBUG
+    liquibase: INFO
+
 server:
-    address: 0.0.0.0
-    error:
-        include-message: always
-    port: ${APP_PORT:8080}
-keycloak:
-    realm: my_realm
-    auth-server-url: http://localhost:8089/auth
-    ssl-required: external
-    resource: my_client
-    public-client: true
+  address: 0.0.0.0
+  error:
+    include-message: always
+  port: ${APP_PORT:8080}
 spring:
-    security:
-        oauth2:
-            client:
-                registration:
-                    keycloak:
-                        client-id: my_client
-                        client-secret: 81e3fd9f-52ce-4549-8ea9-ae53e754da89
-                        authorization-grant-type: authorization_code
-                        redirect-uri: http://localhost:8182/login/oauth2/code/myclient-ac
-                        scope: openid
-                provider:
-                    keycloak:
-                        issuer-uri: http://localhost:8484/auth/realms/my_realm
-                        #authorization-uri: http://localhost:8180/auth/realms/myrealm/protocol/openid-connect/auth
-                        #token-uri: http://localhost:8180/auth/realms/myrealm/protocol/openid-connect/token
-                        #user-info-uri: http://localhost:8180/auth/realms/myrealm/protocol/openid-connect/userinfo
-                        #jwk-set-uri: http://localhost:8180/auth/realms/myrealm/protocol/openid-connect/certs
-                        #user-name-attribute: preferred_username
-    batch:
-        jdbc:
-            initialize-schema: always
-    data:
-        r2dbc:
-            repositories:
-                enabled: true
-    datasource:
-        driver-class-name: org.postgresql.Driver
-        password: ${DB_PASSWORD}
-        url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
-        username: ${DB_USER}
-    jpa:
-        properties:
-            hibernate:
-                default_schema: ${DB_SCHEMA:public}
-    liquibase:
-        change-log: classpath:db/changelog/root.xml
-        default-schema: ${DB_SCHEMA}
-        driver-class-name: org.postgresql.Driver
-    main:
-        allow-bean-definition-overriding: true
+  security:
+    oauth2:
+      client:
+        registration:
+          my_client:
+            client-id: my_client
+            client-secret: lKYzJOZYEfiGF6U7rcLZjgHPytRvdwPA
+            clientName: TreeGateway
+            authorization-grant-type: authorization_code
+            redirectUriTemplate: http://localhost:8484/login/oauth2/code/my_client
+            scope: openid
+        provider:
+          my_client:
+            issuer-uri: http://localhost:8484/auth/realms/my_realm
+            #authorization-uri: http://localhost:8484/auth/realms/my_realm/protocol/openid-connect/auth
+            #token-uri: http://localhost:8484/auth/realms/my_realm/protocol/openid-connect/token
+            #user-info-uri: http://localhost:8484/auth/realms/my_realm/protocol/openid-connect/userinfo
+            #jwk-set-uri: http://localhost:8484/auth/realms/my_realm/protocol/openid-connect/certs
+            #user-name-attribute: preferred_username
+    jdbc:
+      initialize-schema: always
+  data:
     r2dbc:
-        name: ${DB_NAME}
-        password: ${DB_PASSWORD}
-        pool:
-            enabled: true
-            initial-size: 10
-            max-idle-time: 1m
-            max-size: 50
-        properties:
-            errorResponseLogLevel: DEBUG
-            host: ${DB_HOST}
-            port: ${DB_PORT}
-            schema: ${DB_SCHEMA:public}
-        url: r2dbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
-        username: ${DB_USER}
+      repositories:
+        enabled: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+  jpa:
+    properties:
+      hibernate:
+        default_schema: ${DB_SCHEMA:public}
+  liquibase:
+    change-log: classpath:db/changelog/root.xml
+    default-schema: ${DB_SCHEMA}
+    driver-class-name: org.postgresql.Driver
+  main:
+    allow-bean-definition-overriding: true
+  r2dbc:
+    name: ${DB_NAME}
+    password: ${DB_PASSWORD}
+    pool:
+      enabled: true
+      initial-size: 10
+      max-idle-time: 1m
+      max-size: 50
+    properties:
+      errorResponseLogLevel: DEBUG
+      host: ${DB_HOST}
+      port: ${DB_PORT}
+      schema: ${DB_SCHEMA:public}
+    url: r2dbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}

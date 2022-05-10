@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import com.history.tree.services.DatabaseUserDetailsService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.configurationprocessor.json.JSONObject
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -11,7 +12,8 @@ import org.springframework.core.convert.converter.Converter
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
+import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
@@ -21,6 +23,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService
+import org.springframework.security.oauth2.client.registration.ClientRegistrations
+import org.springframework.security.oauth2.client.registration.InMemoryReactiveClientRegistrationRepository
+import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
@@ -35,7 +40,9 @@ import reactor.core.publisher.Mono
 
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@ConditionalOnProperty(name = ["spring.security.oauth2.resourceserver.jwt.issuer-uri"])
+@EnableWebFluxSecurity
+@EnableReactiveMethodSecurity
 class WebSecurityConfiguration(private val userDetailsService: DatabaseUserDetailsService) {
 
     private val log: Logger = LoggerFactory.getLogger(WebSecurityConfiguration::class.java.name)
@@ -43,38 +50,19 @@ class WebSecurityConfiguration(private val userDetailsService: DatabaseUserDetai
     // For MVC use WebSecurityConfigurerAdapter
     @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
-        return if (SECURITY_ENABLED) {
-            http
-                .authorizeExchange { authorizeRequests ->
-                    authorizeRequests
-                        .pathMatchers("/swagger/**").permitAll()
-                        .pathMatchers("/actuator/**").permitAll()
-                        .pathMatchers("/auth/**").permitAll()
-                        .pathMatchers("/debug/**").permitAll()
-                        .anyExchange().authenticated()
-                        .and()
-                        .formLogin().disable().httpBasic().disable()
-                        .csrf().disable()
-                }
-                //.authenticationManager(reactiveAuthenticationManager())
-                .oauth2ResourceServer { resourceServerConfigurer ->
-                    resourceServerConfigurer
-                        .jwt { jwtConfigurer ->
-                            jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter())
-                        }
-                }
-                .oauth2Login { oauth2Login ->
-                    oauth2Login.authenticationMatcher { userInfoEndpoint ->
-                            userInfoEndpoint.oidcUserService(this.oidcUserService())
-                        }
-                }
+        http.oauth2Client()
 
-                .build()
-        } else http.authorizeExchange()
-            .anyExchange()
-            .permitAll().and()
-            .csrf().disable()
+        return http.build()
+    }
+
+    @Bean
+    fun clientRegistrations(): ReactiveClientRegistrationRepository? {
+        val clientRegistration = ClientRegistrations
+            .fromOidcIssuerLocation("http://localhost:8484/auth/realms/my_realm")
+            .clientId("my_client")
+            .clientSecret("lKYzJOZYEfiGF6U7rcLZjgHPytRvdwPA")
             .build()
+        return InMemoryReactiveClientRegistrationRepository(clientRegistration)
     }
 
     @Bean
