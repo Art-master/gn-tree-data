@@ -48,8 +48,30 @@ class WebSecurityConfiguration(private val userDetailsService: DatabaseUserDetai
     private val log: Logger = LoggerFactory.getLogger(WebSecurityConfiguration::class.java.name)
 
     // For MVC use WebSecurityConfigurerAdapter
+/*    @Bean
+    fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
+        http.oauth2Client()
+
+        return http.build()
+    }*/
+
     @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
+        http.cors().and()
+            .authorizeExchange { authorizeRequests ->
+                authorizeRequests
+                    .pathMatchers("/swagger/**").permitAll()
+                    .pathMatchers("/actuator/**").permitAll()
+                    .pathMatchers("/auth/**").permitAll()
+                    .pathMatchers("/debug/**").permitAll()
+                    .anyExchange().authenticated()
+                    .and()
+                    .formLogin().disable()
+                    .httpBasic().disable()
+                    .csrf().disable().cors()
+                //.cors().disable()
+            }
+        //.authenticationManager(reactiveAuthenticationManager())
         http.oauth2Client()
 
         return http.build()

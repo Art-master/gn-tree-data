@@ -24,7 +24,7 @@ class TreeTestDataGenerator(
     val relationshipRepository: RelationshipRepository,
     val userRepository: UserRepository,
     val userRoleRepository: UserRoleRepository,
-    val passwordEncoder: PasswordEncoder,
+    //val passwordEncoder: PasswordEncoder,
 ) {
 
     companion object {
@@ -152,14 +152,14 @@ class TreeTestDataGenerator(
         val user = User().apply {
             name = "user"
             login = "user@mail.ru"
-            password = passwordEncoder.encode("user")
+            //password = passwordEncoder.encode("user")
 
         }
 
         val userAdmin = User().apply {
             name = "admin"
             login = "admin@mail.ru"
-            password = passwordEncoder.encode("admin")
+            //password = passwordEncoder.encode("admin")
         }
 
         return userRepository.saveAll(listOf(userAdmin, user))

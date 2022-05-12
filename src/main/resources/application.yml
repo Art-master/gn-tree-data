@@ -11,6 +11,11 @@ server:
   error:
     include-message: always
   port: ${APP_PORT:8080}
+
+app:
+  cors:
+    allowed-origins: http://localhost:3000
+
 spring:
   security:
     oauth2:
@@ -18,11 +23,12 @@ spring:
         registration:
           my_client:
             client-id: my_client
-            client-secret: lKYzJOZYEfiGF6U7rcLZjgHPytRvdwPA
+            client-secret: c4CkQPltyF8CVfq126odPgy4DxlsqjPN
             clientName: TreeGateway
             authorization-grant-type: authorization_code
-            redirectUriTemplate: http://localhost:8484/login/oauth2/code/my_client
+            #redirectUriTemplate: http://localhost:8484/login/oauth2/code/my_client
             scope: openid
+            enable-cors: true
         provider:
           my_client:
             issuer-uri: http://localhost:8484/auth/realms/my_realm
