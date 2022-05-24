@@ -25,7 +25,8 @@ import java.sql.DriverManager
 
 @Configuration
 @EnableR2dbcRepositories(value = ["com.core.app.repository"])
-class R2DBCConfig : AbstractR2dbcConfiguration() {
+class
+R2DBCConfig : AbstractR2dbcConfiguration() {
 
     private val log: Logger = LoggerFactory.getLogger(R2DBCConfig::class.java.name)
 

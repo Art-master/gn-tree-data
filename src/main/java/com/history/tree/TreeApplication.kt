@@ -10,7 +10,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 @EnableWebFlux
 @EnableSwagger2
 @EntityScan(basePackages = ["com.history.tree.model"])
-
 class TreeApplication
 
 fun main(args: Array<String>) {

@@ -11,34 +11,15 @@ server:
   error:
     include-message: always
   port: ${APP_PORT:8080}
-
-app:
-  cors:
-    allowed-origins: http://localhost:3000
+  servlet:
+    context-path: /tree-data/
 
 spring:
   security:
     oauth2:
-      client:
-        registration:
-          my_client:
-            client-id: my_client
-            client-secret: c4CkQPltyF8CVfq126odPgy4DxlsqjPN
-            clientName: TreeGateway
-            authorization-grant-type: authorization_code
-            #redirectUriTemplate: http://localhost:8484/login/oauth2/code/my_client
-            scope: openid
-            enable-cors: true
-        provider:
-          my_client:
-            issuer-uri: http://localhost:8484/auth/realms/my_realm
-            #authorization-uri: http://localhost:8484/auth/realms/my_realm/protocol/openid-connect/auth
-            #token-uri: http://localhost:8484/auth/realms/my_realm/protocol/openid-connect/token
-            #user-info-uri: http://localhost:8484/auth/realms/my_realm/protocol/openid-connect/userinfo
-            #jwk-set-uri: http://localhost:8484/auth/realms/my_realm/protocol/openid-connect/certs
-            #user-name-attribute: preferred_username
-    jdbc:
-      initialize-schema: always
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8484/auth/realms/my_realm
   data:
     r2dbc:
       repositories:
