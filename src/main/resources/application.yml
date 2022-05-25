@@ -54,3 +54,20 @@ spring:
       schema: ${DB_SCHEMA:public}
     url: r2dbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${DB_USER}
+
+# METRICS
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true

@@ -37,8 +37,8 @@ class WebSecurityConfiguration {
                     .pathMatchers("/actuator/**").permitAll()
                     .pathMatchers("/auth/**").permitAll()
                     .pathMatchers("/debug/**").permitAll()
-                    .anyExchange().authenticated()
-                    //.anyExchange().permitAll() //DEBUG
+                    //.anyExchange().authenticated()
+                    .anyExchange().permitAll() //DEBUG
                     .and()
                     .formLogin().disable()
                     .httpBasic().disable()
