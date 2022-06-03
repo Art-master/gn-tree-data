@@ -15,6 +15,8 @@ server:
     context-path: /tree-data/
 
 spring:
+  application:
+    name: tree-data
   security:
     oauth2:
       resourceserver:
@@ -54,6 +56,18 @@ spring:
       schema: ${DB_SCHEMA:public}
     url: r2dbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${DB_USER}
+
+#OPEN TRACING
+opentracing:
+  jaeger:
+    log-spans: true
+    udp-sender:
+      port: 6831
+      host: localhost
+    enabled: true
+    const-sampler:
+      decision: true
+    enable-b3-propagation: true
 
 # METRICS
 management:
