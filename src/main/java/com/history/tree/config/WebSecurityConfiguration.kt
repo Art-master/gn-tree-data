@@ -59,17 +59,13 @@ class WebSecurityConfiguration {
     fun jwtGrantedAuthoritiesExtractor(): Converter<Jwt, Collection<GrantedAuthority>> {
         val delegate = JwtGrantedAuthoritiesConverter()
 
-        return object : Converter<Jwt, Collection<GrantedAuthority>> {
+        return Converter<Jwt, Collection<GrantedAuthority>> { jwt ->
+            val realmAccess = jwt.claims["realm_access"] as Map<*, *>
 
-            @SuppressWarnings("unchecked")
-            override fun convert(jwt: Jwt): Collection<GrantedAuthority> {
-                val realmAccess = jwt.claims["realm_access"] as Map<*, *>
-
-                return (realmAccess["roles"] as List<String>?)!!.stream()
-                    .map { roleName: String -> "ROLE_$roleName" }
-                    .map { role: String? -> SimpleGrantedAuthority(role) }
-                    .collect(Collectors.toList())
-            }
+            (realmAccess["roles"] as List<String>?)!!.stream()
+                .map { roleName: String -> "ROLE_$roleName" }
+                .map { role: String? -> SimpleGrantedAuthority(role) }
+                .collect(Collectors.toList())
         }
     }
 }
