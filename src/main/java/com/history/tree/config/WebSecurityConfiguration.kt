@@ -1,7 +1,5 @@
 package com.history.tree.config
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.convert.converter.Converter
@@ -13,37 +11,33 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter
 import org.springframework.security.web.server.SecurityWebFilterChain
 import reactor.core.publisher.Mono
 import java.util.stream.Collectors
-
 
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 class WebSecurityConfiguration {
 
-    private val log: Logger = LoggerFactory.getLogger(WebSecurityConfiguration::class.java.name)
-
-    // For MVC use WebSecurityConfigurerAdapter
+    // For MVC need to use WebSecurityConfigurerAdapter
     @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         http.authorizeExchange { authorizeRequests ->
-                authorizeRequests
-                    .pathMatchers("/swagger/**").permitAll()
-                    .pathMatchers("/actuator/**").permitAll()
-                    .pathMatchers("/auth/**").permitAll()
-                    .pathMatchers("/debug/**").permitAll()
-                    //.anyExchange().authenticated()
-                    .anyExchange().permitAll() //DEBUG
-                    .and()
-                    .formLogin().disable()
-                    .httpBasic().disable()
-                    .csrf().disable()
-            }
+            authorizeRequests
+                .pathMatchers("/swagger/**").permitAll()
+                .pathMatchers("/actuator/**").permitAll()
+                .pathMatchers("/auth/**").permitAll()
+                .pathMatchers("/debug/**").permitAll()
+                //.anyExchange().authenticated()
+                .anyExchange().permitAll() //DEBUG
+                .and()
+                .formLogin().disable()
+                .httpBasic().disable()
+                .csrf().disable()
+        }
 
         return http.build()
     }
@@ -57,13 +51,11 @@ class WebSecurityConfiguration {
 
     @Bean
     fun jwtGrantedAuthoritiesExtractor(): Converter<Jwt, Collection<GrantedAuthority>> {
-        val delegate = JwtGrantedAuthoritiesConverter()
-
         return Converter<Jwt, Collection<GrantedAuthority>> { jwt ->
             val realmAccess = jwt.claims["realm_access"] as Map<*, *>
 
-            (realmAccess["roles"] as List<String>?)!!.stream()
-                .map { roleName: String -> "ROLE_$roleName" }
+            (realmAccess["roles"] as List<*>).stream()
+                .map { roleName -> "ROLE_$roleName" }
                 .map { role: String? -> SimpleGrantedAuthority(role) }
                 .collect(Collectors.toList())
         }
