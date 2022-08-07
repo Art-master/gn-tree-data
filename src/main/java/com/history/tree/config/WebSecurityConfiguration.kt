@@ -1,30 +1,32 @@
 package com.history.tree.config
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.convert.converter.Converter
-import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.oauth2.jwt.Jwt
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
-import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter
+import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder
+import org.springframework.security.oauth2.server.resource.authentication.*
 import org.springframework.security.web.server.SecurityWebFilterChain
-import reactor.core.publisher.Mono
-import java.util.stream.Collectors
 
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 class WebSecurityConfiguration {
 
+    @Value("spring.security.oauth2.resourceserver.jwt.issuer-uri")
+    private lateinit var issuerUri: String
+
     // For MVC need to use WebSecurityConfigurerAdapter
     @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
-        http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
+        http.oauth2ResourceServer()
+            .jwt()
+            .jwtAuthenticationConverter(jwtAuthenticationConverter())
+            .jwtDecoder(jwtDecoder())
+
         http.authorizeExchange { authorizeRequests ->
             authorizeRequests
                 .pathMatchers("/swagger/**").permitAll()
@@ -43,21 +45,23 @@ class WebSecurityConfiguration {
     }
 
     @Bean
-    fun jwtAuthenticationConverter(): Converter<Jwt, out Mono<out AbstractAuthenticationToken>>? {
-        val jwtAuthenticationConverter = JwtAuthenticationConverter()
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesExtractor())
-        return ReactiveJwtAuthenticationConverterAdapter(jwtAuthenticationConverter)
+    fun jwtDecoder(): ReactiveJwtDecoder {
+        val jwkSetUri = "${this.issuerUri}/protocol/openid-connect/certs"
+        return NimbusReactiveJwtDecoder.withJwkSetUri(jwkSetUri).build()
     }
 
-    @Bean
-    fun jwtGrantedAuthoritiesExtractor(): Converter<Jwt, Collection<GrantedAuthority>> {
-        return Converter<Jwt, Collection<GrantedAuthority>> { jwt ->
-            val realmAccess = jwt.claims["realm_access"] as Map<*, *>
 
-            (realmAccess["roles"] as List<*>).stream()
-                .map { roleName -> "ROLE_$roleName" }
-                .map { role: String? -> SimpleGrantedAuthority(role) }
-                .collect(Collectors.toList())
-        }
+    @Bean
+    fun jwtAuthenticationConverter(): ReactiveJwtAuthenticationConverter? {
+        val authoritiesConverter = JwtGrantedAuthoritiesConverter()
+        authoritiesConverter.setAuthorityPrefix("ROLE_")
+        authoritiesConverter.setAuthoritiesClaimName("roles")
+
+        val jwtAuthenticationConverter = ReactiveJwtAuthenticationConverter()
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(
+            ReactiveJwtGrantedAuthoritiesConverterAdapter(authoritiesConverter)
+        )
+
+        return jwtAuthenticationConverter
     }
 }
