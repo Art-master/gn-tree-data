@@ -16,7 +16,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 @EnableReactiveMethodSecurity
 class WebSecurityConfiguration {
 
-    @Value("spring.security.oauth2.resourceserver.jwt.issuer-uri")
+    @Value("\${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private lateinit var issuerUri: String
 
     // For MVC need to use WebSecurityConfigurerAdapter
@@ -46,8 +46,8 @@ class WebSecurityConfiguration {
 
     @Bean
     fun jwtDecoder(): ReactiveJwtDecoder {
-        val jwkSetUri = "${this.issuerUri}/protocol/openid-connect/certs"
-        return NimbusReactiveJwtDecoder.withJwkSetUri(jwkSetUri).build()
+        val jwtSetUri = "${this.issuerUri}/protocol/openid-connect/certs"
+        return NimbusReactiveJwtDecoder.withJwkSetUri(jwtSetUri).build()
     }
 
 
