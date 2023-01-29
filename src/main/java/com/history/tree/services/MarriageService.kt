@@ -13,6 +13,6 @@ class MarriageService(val repository: MarriageRepository) {
     }
 
     suspend fun getByTreeId(treeId: Long): Flow<Marriage> {
-        return repository.findRelationshipsByTree(treeId)
+        return repository.findMarriagesByTree(treeId)
     }
 }

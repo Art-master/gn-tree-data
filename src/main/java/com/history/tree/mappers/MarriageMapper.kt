@@ -6,9 +6,7 @@ import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
 @Mapper
-interface MarriageMapper {
-    fun relationshipToDto(marriage: Marriage): MarriageDTO
-
+interface MarriageMapper: EntityMapper<Marriage, MarriageDTO> {
     companion object {
         val INSTANCE = Mappers.getMapper(MarriageMapper::class.java)!!
     }
