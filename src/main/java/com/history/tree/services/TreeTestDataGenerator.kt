@@ -87,7 +87,7 @@ class TreeTestDataGenerator(
 
         val marriage = Relationship(
             personId = father.id,
-            relationPersonId = mather.id,
+            relatedPersonId = mather.id,
             relationshipType = 1 //Marriage
         )
 
@@ -97,7 +97,7 @@ class TreeTestDataGenerator(
         relatives.subList(1, relatives.size - 1).forEach { r: Person ->
             val relation = Relationship(
                 personId = r.id,
-                relationPersonId = r.id,
+                relatedPersonId = r.id,
                 relationshipType = 2 //Children
             )
             relationship.add(relation)

@@ -17,8 +17,8 @@ class Relationship(
     @Column("person_id")
     private val personId: Long,
 
-    @Column("relation_person_id")
-    private val relationPersonId: Long,
+    @Column("related_person_id")
+    private val relatedPersonId: Long,
 
     @Column("relationship_type")
     private val relationshipType: Int
