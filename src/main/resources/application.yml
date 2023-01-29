@@ -21,7 +21,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_ADDR}/auth/realms/genappline-realm
+          issuer-uri: ${KEYCLOAK_ADDR}/realms/genappline-realm
   data:
     r2dbc:
       repositories:

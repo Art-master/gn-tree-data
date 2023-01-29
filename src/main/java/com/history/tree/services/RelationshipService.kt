@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.map
 import org.springframework.stereotype.Service
 
 @Service
-class RelationshipService(val repository: RelationshipRepository) {
+class RelationshipService(val repository: RelationshipRepository, val mapper: RelationshipMapper) {
 
     suspend fun findById(id: Long): RelationshipDTO {
         return RelationshipDTO(id = 1) //TODO Mock
@@ -16,7 +16,7 @@ class RelationshipService(val repository: RelationshipRepository) {
 
     suspend fun getByTreeId(treeId: Long): Flow<RelationshipDTO> {
         return repository.findRelationshipsByTree(treeId)
-            .map { r -> RelationshipMapper.INSTANCE.relationshipToDto(r) }
+            .map { r -> mapper.relationshipToDto(r) }
     }
 
 }
