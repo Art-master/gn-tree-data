@@ -19,6 +19,11 @@ class TreeController(val treeService: TreeService) {
         return treeService.findAllByUserId(id)
     }
 
+    @PatchMapping
+    suspend fun edit(@RequestBody tree: TreeDTO): TreeDTO {
+        return treeService.edit(tree)
+    }
+
     @PostMapping
     suspend fun create(@RequestBody tree: TreeDTO): TreeDTO {
         return treeService.create(tree)
