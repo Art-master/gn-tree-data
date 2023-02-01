@@ -42,7 +42,7 @@ class TreeTestDataGenerator(
 
     @Transactional
     suspend fun generate(): Tree {
-        val tree = Tree(name = "Дерево")
+        val tree = Tree(name = "Дерево", description = "Описание")
         val savedTree = treeRepository.save(tree)
         val malePersons = generateMalePersons(savedTree)
         val allPersons = generateFemalePersons(savedTree).plus(malePersons)

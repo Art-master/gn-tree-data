@@ -2,5 +2,6 @@ package com.history.tree.dto
 
 data class TreeDTO(
         val id: Long,
-        val name: String?
+        val name: String,
+        val description: String
 )

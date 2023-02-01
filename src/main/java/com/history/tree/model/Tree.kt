@@ -12,4 +12,7 @@ data class Tree(
 
         @Column("name")
         val name: String,
+
+        @Column("description")
+        val description: String,
 )
