@@ -1,1 +1,1 @@
-rootProject.name = "tree-data"
+rootProject.name = "gn-tree-data"

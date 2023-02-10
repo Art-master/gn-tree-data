@@ -9,9 +9,9 @@ plugins {
     kotlin("kapt") version "1.5.21"
 }
 
-group = "com.history"
+group = "com.genappline"
 version = "0.0.1-SNAPSHOT"
-description = "tree-data"
+description = "gn-tree-data"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 tasks.withType<JavaCompile>() {
@@ -28,6 +28,25 @@ tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "17"
+    }
+}
+
+liquibase {
+    activities.register("main") {
+        val userName = System.getProperty("DB_USER")
+        val userPass = System.getProperty("DB_PASSWORD")
+        val dbHost = System.getProperty("DB_HOST")
+        val dbPort = System.getProperty("DB_PORT")
+        val dbName = System.getProperty("DB_NAME")
+
+        this.arguments = mapOf(
+            "logLevel" to "info",
+            "driver" to "org.postgresql.Driver",
+            "changeLogFile" to "src/main/resources/db/changelog/root.xml",
+            "url" to "jdbc:postgresql://$dbHost:$dbPort/$dbName?createDatabaseIfNotExist=true",
+            "username" to userName,
+            "password" to userPass
+        )
     }
 }
 
@@ -66,9 +85,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.5.2")
 
     //Liquibase
-    implementation("org.liquibase:liquibase-core:4.5.0")
-
-    implementation("org.springframework:spring-orm:5.3.18") //???
+    val postgresJdbcVersion = "42.5.3"
+    liquibaseRuntime("org.liquibase:liquibase-core:4.19.0")
+    liquibaseRuntime("info.picocli:picocli:4.6.1")
+    liquibaseRuntime("org.postgresql:postgresql:${postgresJdbcVersion}")
 
     //Mapping
     implementation("org.mapstruct:mapstruct:1.5.3.Final")
