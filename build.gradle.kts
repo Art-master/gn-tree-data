@@ -1,12 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    val kotlinVersion = "1.8.10"
+
     id("org.springframework.boot") version "3.0.2"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.liquibase.gradle") version "2.0.4"
-    kotlin("jvm") version "1.7.22"
-    kotlin("plugin.spring") version "1.7.22"
-    kotlin("kapt") version "1.5.21"
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.spring") version kotlinVersion
+    kotlin("kapt") version kotlinVersion
 }
 
 group = "com.genappline"
@@ -14,7 +16,7 @@ version = "0.0.1-SNAPSHOT"
 description = "gn-tree-data"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
-tasks.withType<JavaCompile>() {
+tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
@@ -66,21 +68,20 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation:$springVersion")
     implementation("org.springframework.boot:spring-boot-starter-actuator:$springVersion")
     kapt("org.springframework.boot:spring-boot-configuration-processor:$springVersion")
-    implementation("org.springframework.security:spring-security-oauth2-jose:5.6.2")
+    implementation("org.springframework.security:spring-security-oauth2-jose:6.0.0")
 
     //Metrics
-    implementation("io.micrometer:micrometer-registry-prometheus:1.9.0")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.10.3")
 
     //Docs API
-    implementation("org.springdoc:springdoc-openapi-webflux-ui:1.5.2")
-    implementation("io.springfox:springfox-swagger2:3.0.0")
-    implementation("io.springfox:springfox-swagger-ui:2.9.2")
+    implementation("org.springdoc:springdoc-openapi-webflux-ui:1.6.14")
 
     //Kotlin
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
-    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.6")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.21")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.21")
+    val kotlinVersion = "1.8.10"
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.1")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     //Kotlin + Reactor
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.5.2")
 
@@ -91,22 +92,23 @@ dependencies {
     liquibaseRuntime("org.postgresql:postgresql:${postgresJdbcVersion}")
 
     //Mapping
-    implementation("org.mapstruct:mapstruct:1.5.3.Final")
-    kapt("org.mapstruct:mapstruct-processor:1.5.3.Final")
+    val mapstructVersion = "1.5.3.Final"
+    implementation("org.mapstruct:mapstruct:$mapstructVersion")
+    kapt("org.mapstruct:mapstruct-processor:$mapstructVersion")
 
     //Tracing
     implementation("io.opentracing.contrib:opentracing-spring-jaeger-cloud-starter:3.3.1")
 
     //Database
-    runtimeOnly("org.postgresql:postgresql:42.3.3")
-    runtimeOnly("io.r2dbc:r2dbc-postgresql:0.8.12.RELEASE")
+    runtimeOnly("org.postgresql:postgresql:42.5.3")
+    runtimeOnly("io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE")
 
     implementation("com.google.code.gson:gson:2.8.9")
 
     //TESTS
-    testImplementation("org.springframework.boot:spring-boot-starter-test:2.6.6")
-    testImplementation("org.springframework.security:spring-security-test:5.6.2")
-    testImplementation("io.projectreactor:reactor-test:3.4.16")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
+    testImplementation("org.springframework.security:spring-security-test:6.0.1")
+    testImplementation("io.projectreactor:reactor-test:3.5.2")
 }
 
 tasks.withType<Test> {
