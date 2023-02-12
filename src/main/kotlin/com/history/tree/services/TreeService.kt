@@ -37,6 +37,7 @@ class TreeService(val repository: TreeRepository, val mapper: TreeMapper) {
     }
 
     suspend fun edit(tree: TreeDTO): TreeDTO {
+        if (tree.id == 0L) throw RuntimeException() //TODO custom exception
         val entity: Tree = mapper.dtoToEntity(tree)
         val saved = repository.save(entity)
         return mapper.entityToDTO(saved)

@@ -5,12 +5,6 @@ import io.r2dbc.spi.ConnectionFactories
 import io.r2dbc.spi.ConnectionFactory
 import io.r2dbc.spi.ConnectionFactoryOptions
 import io.r2dbc.spi.Option
-import liquibase.Contexts
-import liquibase.LabelExpression
-import liquibase.Liquibase
-import liquibase.database.DatabaseFactory
-import liquibase.database.jvm.JdbcConnection
-import liquibase.resource.ClassLoaderResourceAccessor
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -21,7 +15,6 @@ import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
 import org.springframework.r2dbc.connection.R2dbcTransactionManager
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer
 import org.springframework.transaction.ReactiveTransactionManager
-import java.sql.DriverManager
 
 @Configuration
 @EnableR2dbcRepositories(value = ["com.core.app.repository"])
@@ -82,18 +75,6 @@ R2DBCConfig : AbstractR2dbcConfiguration() {
     fun initializer(connectionFactory: ConnectionFactory?): ConnectionFactoryInitializer {
         val initializer = ConnectionFactoryInitializer()
         initializer.setConnectionFactory(connectionFactory!!)
-        updateDatabaseStructure()
         return initializer
-    }
-
-    private fun updateDatabaseStructure() {
-        try {
-            val connection = DriverManager.getConnection(jdbcUrl, username, password)
-            val database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(JdbcConnection(connection))
-            val liquibase = Liquibase(changeLog, ClassLoaderResourceAccessor(), database)
-            liquibase.update(Contexts(), LabelExpression())
-        } catch (e: Exception) {
-            log.error(e.message, e)
-        }
     }
 }

@@ -19,8 +19,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest
 @TestPropertySource(properties = {
         "DB_USER=postgres",
-        "DB_PASSWORD=admin",
-        "DB_NAME=tree",
+        "DB_PASSWORD=postgres",
+        "DB_NAME=table",
         "DB_PORT=5432",
         "DB_HOST=localhost"})
 class TreeApplicationTests {
