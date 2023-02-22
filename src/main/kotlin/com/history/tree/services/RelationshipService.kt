@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class RelationshipService(val repository: RelationshipRepository, val mapper: RelationshipMapper) {
-
     suspend fun findById(id: Long): RelationshipDTO {
         return RelationshipDTO(id = 1) //TODO Mock
     }
