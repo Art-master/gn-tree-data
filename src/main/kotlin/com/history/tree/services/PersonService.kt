@@ -13,11 +13,11 @@ class PersonService(val repository: PersonRepository, val mapper: PersonMapper) 
 
     suspend fun findById(id: Long): PersonDTO {
         val person = repository.findById(id)
-        return this.mapper.entityToDTO(person!!)
+        return mapper.entityToDTO(person!!)
     }
 
     suspend fun getPersonsByTreeId(treeId: Long): Flow<PersonDTO> {
         return repository.findAllByTreeId(treeId)
-            .map { person -> this.mapper.entityToDTO(person) }
+            .map { person -> mapper.entityToDTO(person) }
     }
 }

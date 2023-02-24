@@ -28,6 +28,8 @@ class TreeService(val repository: TreeRepository, val mapper: TreeMapper) {
     }
 
     suspend fun create(tree: TreeDTO): TreeDTO {
+        if (tree.id != 0L) throw ValidationException(
+            "tree.id on create action must be 0, but tree.id = ${tree.id}")
         val entity: Tree = mapper.dtoToEntity(tree)
         val saved = repository.save(entity)
         return mapper.entityToDTO(saved)
