@@ -14,16 +14,17 @@
     - restart IDEA
 5. Create kotlin Run/Debug configuration:
     - `Add Configuration` -> `Add New Configuration` -> `Kotlin`
+    - Set `Use classpath of module` to the value `gn-tree-data.main`
     - Select `ApplicationKt` in the `Main class` field
     - Copy and paste env variables (replace values if needed):
       ```shell
-        APP_PORT=8081;
-        DB_USER=postgres;
-        DB_PASSWORD=postgres;
-        DB_NAME=tree_data;
-        DB_HOST=localhost;
-        DB_PORT=5432;
-        DB_SCHEMA=public;
+        APP_PORT=8081
+        DB_USER=postgres
+        DB_PASSWORD=postgres
+        DB_NAME=tree_data
+        DB_HOST=localhost
+        DB_PORT=5432
+        DB_SCHEMA=public
         KEYCLOAK_ADDR=http://localhost:8484
       ```
 6. start liquibase database initialisation by gradle command (replace values if needed): 
