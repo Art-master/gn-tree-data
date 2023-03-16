@@ -11,9 +11,10 @@ import org.springframework.stereotype.Service
 @Service
 class PersonService(val repository: PersonRepository, val mapper: PersonMapper) {
 
-    suspend fun findById(id: Long): PersonDTO {
+    suspend fun findById(id: Long): PersonDTO? {
         val person = repository.findById(id)
-        return mapper.entityToDTO(person!!)
+        person ?: return null
+        return mapper.entityToDTO(person)
     }
 
     suspend fun getPersonsByTreeId(treeId: Long): Flow<PersonDTO> {

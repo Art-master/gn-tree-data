@@ -6,9 +6,10 @@ CREATE TABLE IF NOT EXISTS relationship
 (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     person_id bigint NOT NULL,
-    relation_person_id bigint NOT NULL,
+    related_person_id bigint NOT NULL,
     relationship_type smallint NOT NULL,
     marriage_id bigint,
+    tree_id bigint,
     CONSTRAINT relationship_pkey PRIMARY KEY (id),
     CONSTRAINT marriage_key FOREIGN KEY (marriage_id)
         REFERENCES marriage (id) MATCH SIMPLE
@@ -20,10 +21,15 @@ CREATE TABLE IF NOT EXISTS relationship
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
-    CONSTRAINT relation_person_key FOREIGN KEY (relation_person_id)
+    CONSTRAINT related_person_key FOREIGN KEY (related_person_id)
         REFERENCES person (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT tree_id FOREIGN KEY (tree_id)
+        REFERENCES tree (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
         NOT VALID
 );
 
@@ -36,7 +42,7 @@ COMMENT ON COLUMN relationship.id
 COMMENT ON COLUMN relationship.person_id
     IS 'Person identifier';
 
-COMMENT ON COLUMN relationship.relation_person_id
+COMMENT ON COLUMN relationship.related_person_id
     IS 'Second person identifier';
 
 COMMENT ON COLUMN relationship.relationship_type
@@ -44,3 +50,6 @@ COMMENT ON COLUMN relationship.relationship_type
 
 COMMENT ON COLUMN relationship.marriage_id
     IS 'Mariage identifier';
+
+COMMENT ON COLUMN relationship.tree_id
+    IS 'Tree identifier';

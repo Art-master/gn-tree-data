@@ -15,4 +15,7 @@ data class Marriage(
 
         @Column("date_end")
         private val dateEnd: String?,
+
+        @Column("tree_id")
+        var treeId: Long
 )

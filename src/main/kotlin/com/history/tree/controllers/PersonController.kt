@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 class PersonController(val personService: PersonService) {
 
     @GetMapping
-    suspend fun getById(@RequestParam id: Long): PersonDTO {
+    suspend fun getById(@RequestParam id: Long): PersonDTO? {
         return personService.findById(id)
     }
 

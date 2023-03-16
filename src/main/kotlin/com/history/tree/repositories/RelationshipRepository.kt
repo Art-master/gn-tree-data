@@ -9,7 +9,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface RelationshipRepository : CoroutineCrudRepository<Relationship, Long> {
-
-    @Query("SELECT * from person p LEFT JOIN relationship r ON p.id= r.person_id WHERE p.tree_id=:tree_id")
-    suspend fun findRelationshipsByTree(@Param("tree_id") treeId: Long): Flow<Relationship>
+    suspend fun findAllByTreeId(treeId: Long): Flow<Relationship>
 }

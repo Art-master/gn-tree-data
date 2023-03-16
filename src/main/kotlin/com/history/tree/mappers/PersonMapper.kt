@@ -5,4 +5,4 @@ import com.history.tree.model.Person
 import org.mapstruct.Mapper
 
 @Mapper(componentModel = "spring")
-interface PersonMapper: EntityMapper<Person, PersonDTO>
+interface PersonMapper : EntityMapper<Person, PersonDTO>

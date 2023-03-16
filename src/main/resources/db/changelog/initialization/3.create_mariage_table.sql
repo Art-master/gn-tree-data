@@ -7,7 +7,13 @@ CREATE TABLE IF NOT EXISTS marriage
     id bigint NOT NULL,
     date_start date,
     date_end date,
-    CONSTRAINT marriage_pkey PRIMARY KEY (id)
+    tree_id bigint,
+    CONSTRAINT marriage_pkey PRIMARY KEY (id),
+    CONSTRAINT tree_id FOREIGN KEY (tree_id)
+        REFERENCES tree (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+        NOT VALID
 );
 
 COMMENT ON TABLE marriage
@@ -21,3 +27,6 @@ COMMENT ON COLUMN marriage.date_start
 
 COMMENT ON COLUMN marriage.date_end
     IS 'Marriage end date';
+
+COMMENT ON COLUMN marriage.tree_id
+    IS 'Tree identifier';

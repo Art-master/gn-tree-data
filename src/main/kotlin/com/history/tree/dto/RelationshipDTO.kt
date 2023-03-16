@@ -1,8 +1,11 @@
 package com.history.tree.dto
 
+import com.history.tree.model.RelationshipType
+
 data class RelationshipDTO(
         val id: Long,
         val marriage: MarriageDTO? = null,
-        val relationPersonId: Long? = null,
-        val relationshipType: Int = 0,
+        val relatedPersonId: Long,
+        val relationshipType: RelationshipType,
+        val treeId: Long
 )

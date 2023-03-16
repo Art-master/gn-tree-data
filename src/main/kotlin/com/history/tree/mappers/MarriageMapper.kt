@@ -5,4 +5,4 @@ import com.history.tree.model.Marriage
 import org.mapstruct.Mapper
 
 @Mapper(componentModel = "spring")
-interface MarriageMapper: EntityMapper<Marriage, MarriageDTO>
+interface MarriageMapper : EntityMapper<Marriage, MarriageDTO>
