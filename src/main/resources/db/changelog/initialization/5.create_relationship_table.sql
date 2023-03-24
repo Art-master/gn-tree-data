@@ -4,12 +4,12 @@
 
 CREATE TABLE IF NOT EXISTS relationship
 (
-    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
-    person_id bigint NOT NULL,
-    related_person_id bigint NOT NULL,
+    id uuid NOT NULL,
+    person_id uuid NOT NULL,
+    related_person_id uuid NOT NULL,
     relationship_type smallint NOT NULL,
-    marriage_id bigint,
-    tree_id bigint,
+    marriage_id uuid,
+    tree_id uuid,
     CONSTRAINT relationship_pkey PRIMARY KEY (id),
     CONSTRAINT marriage_key FOREIGN KEY (marriage_id)
         REFERENCES marriage (id) MATCH SIMPLE

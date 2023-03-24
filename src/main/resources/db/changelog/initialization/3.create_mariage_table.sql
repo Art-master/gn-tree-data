@@ -4,10 +4,10 @@
 
 CREATE TABLE IF NOT EXISTS marriage
 (
-    id bigint NOT NULL,
+    id uuid NOT NULL,
     date_start date,
     date_end date,
-    tree_id bigint,
+    tree_id uuid,
     CONSTRAINT marriage_pkey PRIMARY KEY (id),
     CONSTRAINT tree_id FOREIGN KEY (tree_id)
         REFERENCES tree (id) MATCH SIMPLE

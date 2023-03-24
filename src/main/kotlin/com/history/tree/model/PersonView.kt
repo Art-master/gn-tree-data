@@ -3,22 +3,23 @@ package com.history.tree.model
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
+import java.util.*
 
 @Table("person_view")
 data class PersonView(
     @Id
     @Column("id")
-    private val id: Long = 0,
+    private val id: UUID,
 
     @Column("coordinate_x")
-    private val coordinate_x: Float,
+    private val coordinateX: Float,
 
     @Column("coordinate_y")
-    private val coordinate_y: Float,
+    private val coordinateY: Float,
 
     @Column("person_id")
-    private val personId: Long,
+    private val personId: UUID,
 
     @Column("tree_id")
-    var treeId: Long
+    var treeId: UUID
 )

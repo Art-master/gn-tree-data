@@ -4,11 +4,11 @@
 
 CREATE TABLE IF NOT EXISTS person
 (
-    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    id uuid NOT NULL,
     first_name text,
     last_name text,
     patronymic text,
-    tree_id bigint,
+    tree_id uuid,
     gender "char" NOT NULL,
     birth_date date,
     date_of_death date,

@@ -9,10 +9,11 @@ import com.history.tree.repositories.TreeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class TreeService(val repository: TreeRepository, val mapper: TreeMapper) {
-    suspend fun findById(id: Long): TreeDTO {
+    suspend fun findById(id: UUID): TreeDTO {
         val tree = repository.findById(id)
         return mapper.entityToDTO(tree!!)
     }
@@ -28,20 +29,16 @@ class TreeService(val repository: TreeRepository, val mapper: TreeMapper) {
     }
 
     suspend fun create(tree: TreeDTO): TreeDTO {
-        if (tree.id != 0L) throw ValidationException(
-            "tree.id on create action must be 0, but tree.id = ${tree.id}")
         val entity: Tree = mapper.dtoToEntity(tree)
         val saved = repository.save(entity)
         return mapper.entityToDTO(saved)
     }
 
-    suspend fun delete(id: Long) {
+    suspend fun delete(id: UUID) {
         return repository.deleteById(id)
     }
 
     suspend fun edit(tree: TreeDTO): TreeDTO {
-        if (tree.id <= 0L) throw ValidationException("Non positive id: ${tree.id}")
-
         val entity: Tree = mapper.dtoToEntity(tree)
         val foundTree = repository.findById(tree.id)
         foundTree ?: throw NoSuchObjectException("Tree with id = ${tree.id} is not found")

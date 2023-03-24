@@ -4,11 +4,11 @@
 
 CREATE TABLE IF NOT EXISTS person_view
 (
-    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    id uuid NOT NULL,
     coordinate_x numeric,
 	coordinate_y numeric,
-	person_id bigint,
-	tree_id bigint,
+	person_id uuid,
+	tree_id uuid,
     CONSTRAINT person_view_pkey PRIMARY KEY (id),
     CONSTRAINT person_id FOREIGN KEY (person_id)
         REFERENCES person (id) MATCH SIMPLE

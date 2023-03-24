@@ -1,8 +1,10 @@
 package com.history.tree.dto
 
+import java.util.*
+
 data class MarriageDTO (
-    val id: Long,
+    val id: UUID,
     val dateStart: String?,
     val dateEnd: String?,
-    val treeId: Long
+    val treeId: UUID
 )

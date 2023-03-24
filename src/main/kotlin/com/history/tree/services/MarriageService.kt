@@ -7,17 +7,17 @@ import com.history.tree.repositories.MarriageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class MarriageService(val repository: MarriageRepository, val mapper: MarriageMapper) {
-
-    suspend fun findById(id: Long): MarriageDTO? {
+    suspend fun findById(id: UUID): MarriageDTO? {
         val marriage = repository.findById(id)
         marriage ?: return null
         return mapper.entityToDTO(marriage)
     }
 
-    suspend fun getByTreeId(treeId: Long): Flow<MarriageDTO> {
-        return repository.findMarriagesByTree(treeId).map { m -> mapper.entityToDTO(m) }
+    suspend fun getByTreeId(treeId: UUID): Flow<MarriageDTO> {
+        return repository.findAllByTreeId(treeId).map { m -> mapper.entityToDTO(m) }
     }
 }

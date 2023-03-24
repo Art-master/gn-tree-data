@@ -3,19 +3,20 @@ package com.history.tree.model
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
+import java.util.UUID
 
-@Table("related_points")
-data class RelatedPoints(
+@Table("linked_edges")
+data class PersonLinkedEdges(
     @Id
     @Column("id")
-    private val id: Long = 0,
+    private val id: UUID,
 
     @Column("person_view_id")
-    private val personViewId: Long,
+    private val personViewId: UUID,
 
-    @Column("point_id")
-    private val pointId: Long,
+    @Column("edge_id")
+    private val edgeId: UUID,
 
     @Column("tree_id")
-    var treeId: Long,
+    var treeId: UUID,
 )

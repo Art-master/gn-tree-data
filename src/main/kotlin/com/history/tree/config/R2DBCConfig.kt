@@ -1,8 +1,8 @@
 package com.history.tree.config
 
-import com.history.tree.model.IntToPointsConnectionTypeConverter
+import com.history.tree.model.IntToEdgeTypeConverter
 import com.history.tree.model.IntToRelationshipTypeConverter
-import com.history.tree.model.PointsConnectionTypeToIntConverter
+import com.history.tree.model.EdgeTypeToIntConverter
 import com.history.tree.model.RelationshipTypeToIntConverter
 import io.r2dbc.pool.PoolingConnectionFactoryProvider
 import io.r2dbc.spi.ConnectionFactories
@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.convert.converter.Converter
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration
 import org.springframework.data.r2dbc.convert.R2dbcCustomConversions
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
@@ -87,8 +86,8 @@ R2DBCConfig : AbstractR2dbcConfiguration() {
     @Bean
     override fun r2dbcCustomConversions(): R2dbcCustomConversions {
         val converters = listOf(
-            PointsConnectionTypeToIntConverter(),
-            IntToPointsConnectionTypeConverter(),
+            EdgeTypeToIntConverter(),
+            IntToEdgeTypeConverter(),
             RelationshipTypeToIntConverter(),
             IntToRelationshipTypeConverter()
         )

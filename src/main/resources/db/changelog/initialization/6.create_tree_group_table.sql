@@ -4,7 +4,7 @@
 
 CREATE TABLE IF NOT EXISTS tree_group
 (
-    id bigint NOT NULL,
+    id uuid NOT NULL,
     CONSTRAINT "tree_group_pkey" PRIMARY KEY (id)
 );
 

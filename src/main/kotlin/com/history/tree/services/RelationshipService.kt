@@ -6,15 +6,18 @@ import com.history.tree.repositories.RelationshipRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class RelationshipService(val repository: RelationshipRepository, val mapper: RelationshipMapper) {
-    suspend fun findById(id: Long): RelationshipDTO {
-        return RelationshipDTO(id = 1) //TODO Mock
+    suspend fun findById(id: UUID): RelationshipDTO? {
+        val relationship = repository.findById(id)
+        relationship ?: return null
+        return mapper.relationshipToDto(relationship)
     }
 
-    suspend fun getByTreeId(treeId: Long): Flow<RelationshipDTO> {
-        return repository.findRelationshipsByTree(treeId)
+    suspend fun getByTreeId(treeId: UUID): Flow<RelationshipDTO> {
+        return repository.findAllByTreeId(treeId)
             .map { r -> mapper.relationshipToDto(r) }
     }
 
