@@ -6,5 +6,5 @@ data class PersonLinkedEdgesDTO(
     val id: UUID,
     val personViewId: UUID,
     val edgeId: UUID,
-    val treeId: UUID
+    val treeId: UUID,
 )

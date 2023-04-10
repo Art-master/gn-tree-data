@@ -32,7 +32,7 @@ class TreeTestDataGenerator(
     }
 
 
-    private val randomDate: LocalDate
+    /*private val randomDate: LocalDate
         get() {
             val minDay = LocalDate.of(1970, 1, 1).toEpochDay()
             val maxDay = LocalDate.of(2015, 12, 31).toEpochDay()
@@ -163,5 +163,5 @@ class TreeTestDataGenerator(
         }
 
         return userRepository.saveAll(listOf(userAdmin, user))
-    }
+    }*/
 }

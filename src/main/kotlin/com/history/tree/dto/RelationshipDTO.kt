@@ -6,7 +6,8 @@ import java.util.*
 data class RelationshipDTO(
         val id: UUID,
         val marriage: MarriageDTO? = null,
+        val personId: UUID,
         val relatedPersonId: UUID,
         val relationshipType: RelationshipType,
-        val treeId: UUID
+        val treeId: UUID,
 )

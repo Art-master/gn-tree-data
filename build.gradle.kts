@@ -86,7 +86,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.5.2")
 
     //Liquibase
-    val postgresJdbcVersion = "42.5.3"
+    val postgresJdbcVersion = "42.5.4"
     liquibaseRuntime("org.liquibase:liquibase-core:4.19.0")
     liquibaseRuntime("info.picocli:picocli:4.6.1")
     liquibaseRuntime("org.postgresql:postgresql:${postgresJdbcVersion}")
@@ -100,7 +100,7 @@ dependencies {
     implementation("io.opentracing.contrib:opentracing-spring-jaeger-cloud-starter:3.3.1")
 
     //Database
-    runtimeOnly("org.postgresql:postgresql:42.5.3")
+    runtimeOnly("org.postgresql:postgresql:42.5.4")
     runtimeOnly("io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE")
 
     implementation("com.google.code.gson:gson:2.8.9")

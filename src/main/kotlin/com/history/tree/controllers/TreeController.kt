@@ -4,13 +4,14 @@ import com.history.tree.dto.TreeDTO
 import com.history.tree.services.TreeService
 import kotlinx.coroutines.flow.Flow
 import org.springframework.web.bind.annotation.*
+import java.util.UUID
 
 @RestController
 @RequestMapping("/trees")
 class TreeController(val treeService: TreeService) {
 
     @GetMapping
-    suspend fun getById(@RequestParam id: Long): TreeDTO {
+    suspend fun getById(@RequestParam id: UUID): TreeDTO {
         return treeService.findById(id)
     }
 
@@ -30,7 +31,7 @@ class TreeController(val treeService: TreeService) {
     }
 
     @DeleteMapping
-    suspend fun delete(@RequestParam id: Long) {
+    suspend fun delete(@RequestParam id: UUID) {
         return treeService.delete(id)
     }
 }

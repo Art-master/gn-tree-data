@@ -10,7 +10,10 @@ import org.mapstruct.Mapping
 interface RelationshipMapper {
 
     @Mapping(target = "marriage", source = "marriage")
-    fun relationshipToDto(relationship: Relationship, marriage: MarriageDTO): RelationshipDTO
-
-    fun relationshipToDto(relationship: Relationship): RelationshipDTO
+    @Mapping(target = "id", source = "relationship.id")
+    @Mapping(target = "personId", source = "relationship.personId")
+    @Mapping(target = "relatedPersonId", source = "relationship.relatedPersonId")
+    @Mapping(target = "relationshipType", source = "relationship.relationshipType")
+    @Mapping(target = "treeId", source = "relationship.treeId")
+    fun relationshipToDto(relationship: Relationship, marriage: MarriageDTO?): RelationshipDTO
 }

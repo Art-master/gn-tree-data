@@ -7,5 +7,5 @@ data class PersonViewDTO(
     val coordinateX: Float,
     val coordinateY: Float,
     val personId: UUID,
-    val treeId: UUID
+    val treeId: UUID,
 )

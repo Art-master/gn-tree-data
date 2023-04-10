@@ -10,5 +10,5 @@ data class EdgeDTO(
     val endCoordinateX: Float,
     val endCoordinateY: Float,
     val edgeType: EdgeType,
-    val treeId: UUID
+    val treeId: UUID,
 )

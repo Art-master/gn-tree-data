@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/debug")
 class TestController(val treeTestDataGenerator: TreeTestDataGenerator) {
 
-    @PostMapping("create_test_tree")
+    /*@PostMapping("create_test_tree")
     suspend fun createTestTree(): Tree {
         return treeTestDataGenerator.generate()
     }
@@ -20,5 +20,5 @@ class TestController(val treeTestDataGenerator: TreeTestDataGenerator) {
     @PostMapping("create_test_users")
     suspend fun createTestUsers(): Flow<User> {
         return treeTestDataGenerator.createTestsUsers()
-    }
+    }*/
 }

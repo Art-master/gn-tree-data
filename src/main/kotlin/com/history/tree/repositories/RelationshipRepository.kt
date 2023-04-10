@@ -1,12 +1,9 @@
 package com.history.tree.repositories
 
 import com.history.tree.model.Relationship
-import kotlinx.coroutines.flow.Flow
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface RelationshipRepository : CoroutineCrudRepository<Relationship, UUID> {
-    suspend fun findAllByTreeId(treeId: UUID): Flow<Relationship>
-}
+interface RelationshipRepository : CommonTreeRepository<Relationship>, CoroutineCrudRepository<Relationship, UUID>

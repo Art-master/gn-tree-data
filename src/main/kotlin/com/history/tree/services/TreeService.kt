@@ -2,17 +2,20 @@ package com.history.tree.services
 
 import com.history.tree.dto.TreeDTO
 import com.history.tree.exceptions.NoSuchObjectException
-import com.history.tree.exceptions.ValidationException
 import com.history.tree.mappers.TreeMapper
 import com.history.tree.model.Tree
 import com.history.tree.repositories.TreeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.springframework.data.r2dbc.core.FluentR2dbcOperations
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
+import org.springframework.data.r2dbc.core.usingAndAwait
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class TreeService(val repository: TreeRepository, val mapper: TreeMapper) {
+class TreeService(val repository: TreeRepository, val mapper: TreeMapper,
+                  val op: FluentR2dbcOperations) {
     suspend fun findById(id: UUID): TreeDTO {
         val tree = repository.findById(id)
         return mapper.entityToDTO(tree!!)
@@ -28,9 +31,11 @@ class TreeService(val repository: TreeRepository, val mapper: TreeMapper) {
             .map { entity -> mapper.entityToDTO(entity) }
     }
 
+
+
     suspend fun create(tree: TreeDTO): TreeDTO {
         val entity: Tree = mapper.dtoToEntity(tree)
-        val saved = repository.save(entity)
+        val saved = op.insert(entity.javaClass).usingAndAwait(entity)
         return mapper.entityToDTO(saved)
     }
 

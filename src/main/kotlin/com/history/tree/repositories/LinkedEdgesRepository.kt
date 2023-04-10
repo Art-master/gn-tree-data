@@ -6,8 +6,7 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 import java.util.*
 
+/*
 @Repository
-interface LinkedEdgesRepository : CoroutineCrudRepository<PersonLinkedEdges, UUID> {
-
-    suspend fun findAllByTreeId(treeId: UUID): Flow<PersonLinkedEdges>
-}
+interface LinkedEdgesRepository : CommonTreeRepository<PersonLinkedEdges> {
+}*/

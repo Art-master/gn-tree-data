@@ -6,5 +6,5 @@ data class MarriageDTO (
     val id: UUID,
     val dateStart: String?,
     val dateEnd: String?,
-    val treeId: UUID
+    val treeId: UUID,
 )

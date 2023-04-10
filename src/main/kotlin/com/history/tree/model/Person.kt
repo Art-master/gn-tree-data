@@ -1,6 +1,7 @@
 package com.history.tree.model
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.Version
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDate
@@ -31,5 +32,5 @@ data class Person (
     var birthDate: LocalDate?,
 
     @Column("date_of_death")
-    var dateOfDeath: LocalDate? = null,
+    var dateOfDeath: LocalDate?,
 )
