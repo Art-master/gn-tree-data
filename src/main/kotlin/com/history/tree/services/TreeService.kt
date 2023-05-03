@@ -1,24 +1,27 @@
 package com.history.tree.services
 
+import com.history.tree.dto.PersonDTO
 import com.history.tree.dto.TreeDTO
-import com.history.tree.exceptions.NoSuchObjectException
 import com.history.tree.mappers.TreeMapper
+import com.history.tree.model.Person
 import com.history.tree.model.Tree
 import com.history.tree.repositories.TreeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.springframework.data.r2dbc.core.FluentR2dbcOperations
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.data.r2dbc.core.usingAndAwait
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class TreeService(val repository: TreeRepository, val mapper: TreeMapper,
-                  val op: FluentR2dbcOperations) {
-    suspend fun findById(id: UUID): TreeDTO {
-        val tree = repository.findById(id)
-        return mapper.entityToDTO(tree!!)
+class TreeService(
+    val repository: TreeRepository, val mapper: TreeMapper,
+    val op: FluentR2dbcOperations
+) {
+    suspend fun findById(id: UUID): TreeDTO? {
+        val entity = repository.findById(id)
+        entity ?: return null
+        return mapper.entityToDTO(entity)
     }
 
     suspend fun findAllByUserId(id: Long): Flow<TreeDTO> {
@@ -30,8 +33,6 @@ class TreeService(val repository: TreeRepository, val mapper: TreeMapper,
         return repository.findAll()
             .map { entity -> mapper.entityToDTO(entity) }
     }
-
-
 
     suspend fun create(tree: TreeDTO): TreeDTO {
         val entity: Tree = mapper.dtoToEntity(tree)
@@ -45,9 +46,6 @@ class TreeService(val repository: TreeRepository, val mapper: TreeMapper,
 
     suspend fun edit(tree: TreeDTO): TreeDTO {
         val entity: Tree = mapper.dtoToEntity(tree)
-        val foundTree = repository.findById(tree.id)
-        foundTree ?: throw NoSuchObjectException("Tree with id = ${tree.id} is not found")
-
         val saved = repository.save(entity)
         return mapper.entityToDTO(saved)
     }

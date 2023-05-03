@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface TreeRepository : CoroutineCrudRepository<Tree, UUID> {
-    fun removeById(id: UUID): Long
-}
+interface TreeRepository : CoroutineCrudRepository<Tree, UUID>

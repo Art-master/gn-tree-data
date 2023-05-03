@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS person_view
     CONSTRAINT person_id FOREIGN KEY (person_id)
         REFERENCES person (id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON DELETE CASCADE
         NOT VALID,
     CONSTRAINT tree_id FOREIGN KEY (tree_id)
         REFERENCES tree (id) MATCH SIMPLE

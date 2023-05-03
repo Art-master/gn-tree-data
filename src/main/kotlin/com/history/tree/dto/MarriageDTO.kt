@@ -1,10 +1,11 @@
 package com.history.tree.dto
 
+import java.time.LocalDate
 import java.util.*
 
 data class MarriageDTO (
     val id: UUID,
-    val dateStart: String?,
-    val dateEnd: String?,
+    val dateStart: LocalDate?,
+    val dateEnd: LocalDate?,
     val treeId: UUID,
 )

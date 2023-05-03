@@ -14,17 +14,17 @@ CREATE TABLE IF NOT EXISTS relationship
     CONSTRAINT marriage_key FOREIGN KEY (marriage_id)
         REFERENCES marriage (id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON DELETE CASCADE
         NOT VALID,
     CONSTRAINT person_key FOREIGN KEY (person_id)
         REFERENCES person (id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON DELETE CASCADE
         NOT VALID,
     CONSTRAINT related_person_key FOREIGN KEY (related_person_id)
         REFERENCES person (id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON DELETE CASCADE
         NOT VALID,
     CONSTRAINT tree_id FOREIGN KEY (tree_id)
         REFERENCES tree (id) MATCH SIMPLE

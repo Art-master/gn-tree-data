@@ -1,6 +1,8 @@
 package com.history.tree.services
 
+import com.history.tree.dto.TreeDTO
 import com.history.tree.mappers.EntityMapper
+import com.history.tree.model.Tree
 import com.history.tree.repositories.CommonTreeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -16,7 +18,17 @@ open class CommonTreeService<ENTITY, DTO>(
         return mapper.entityToDTO(entity)
     }
 
-    suspend fun getByTreeId(treeId: UUID): Flow<DTO> {
+    open suspend fun getByTreeId(treeId: UUID): Flow<DTO> {
         return repository.findAllByTreeId(treeId).map { entity -> mapper.entityToDTO(entity) }
+    }
+    
+    suspend fun delete(id: UUID) {
+        return repository.deleteById(id)
+    }
+
+    suspend fun edit(entityDTO: DTO): DTO {
+        val entity: ENTITY = mapper.dtoToEntity(entityDTO)
+        val saved = repository.save(entity)
+        return mapper.entityToDTO(saved)
     }
 }

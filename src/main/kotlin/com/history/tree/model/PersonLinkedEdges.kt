@@ -10,13 +10,13 @@ import java.util.UUID
 data class PersonLinkedEdges(
     @Id
     @Column("id")
-    private val id: UUID,
+    val id: UUID,
 
     @Column("person_view_id")
-    private val personViewId: UUID,
+    val personViewId: UUID,
 
     @Column("edge_id")
-    private val edgeId: UUID,
+    val edgeId: UUID,
 
     @Column("tree_id")
     var treeId: UUID,

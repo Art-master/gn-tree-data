@@ -10,16 +10,16 @@ import java.util.*
 data class PersonView(
     @Id
     @Column("id")
-    private val id: UUID,
+    val id: UUID,
 
     @Column("coordinate_x")
-    private val coordinateX: Float,
+    val coordinateX: Float,
 
     @Column("coordinate_y")
-    private val coordinateY: Float,
+    val coordinateY: Float,
 
     @Column("person_id")
-    private val personId: UUID,
+    val personId: UUID,
 
     @Column("tree_id")
     var treeId: UUID,

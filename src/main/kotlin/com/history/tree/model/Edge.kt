@@ -10,22 +10,22 @@ import java.util.UUID
 data class Edge(
     @Id
     @Column("id")
-    private val id: UUID,
+    val id: UUID,
 
     @Column("start_coordinate_x")
-    private val startCoordinateX: Float,
+    val startCoordinateX: Float,
 
     @Column("start_coordinate_y")
-    private val startCoordinateY: Float,
+    val startCoordinateY: Float,
 
     @Column("end_coordinate_x")
-    private val endCoordinateX: Float,
+    val endCoordinateX: Float,
 
     @Column("end_coordinate_y")
-    private val endCoordinateY: Float,
+    val endCoordinateY: Float,
 
     @Column("edge_type")
-    private val edgeType: EdgeType,
+    val edgeType: EdgeType,
 
     @Column("tree_id")
     var treeId: UUID,

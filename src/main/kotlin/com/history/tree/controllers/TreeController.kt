@@ -11,7 +11,7 @@ import java.util.UUID
 class TreeController(val treeService: TreeService) {
 
     @GetMapping
-    suspend fun getById(@RequestParam id: UUID): TreeDTO {
+    suspend fun getById(@RequestParam id: UUID): TreeDTO? {
         return treeService.findById(id)
     }
 
