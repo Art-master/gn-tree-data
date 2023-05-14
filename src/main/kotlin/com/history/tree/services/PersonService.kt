@@ -2,22 +2,20 @@ package com.history.tree.services
 
 import com.history.tree.dto.PersonDTO
 import com.history.tree.mappers.PersonMapper
+import com.history.tree.model.Person
 import com.history.tree.repositories.PersonRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import org.mapstruct.factory.Mappers
+import org.springframework.data.r2dbc.core.FluentR2dbcOperations
+import org.springframework.data.r2dbc.core.usingAndAwait
 import org.springframework.stereotype.Service
 
 @Service
-class PersonService(val repository: PersonRepository, val mapper: PersonMapper) {
-
-    suspend fun findById(id: Long): PersonDTO {
-        val person = repository.findById(id)
-        return mapper.entityToDTO(person!!)
-    }
-
-    suspend fun getPersonsByTreeId(treeId: Long): Flow<PersonDTO> {
-        return repository.findAllByTreeId(treeId)
-            .map { person -> mapper.entityToDTO(person) }
+class PersonService(
+    val repository: PersonRepository, val mapper: PersonMapper,
+    val op: FluentR2dbcOperations
+) : CommonTreeService<Person, PersonDTO>(repository, mapper) {
+    suspend fun create(person: PersonDTO): PersonDTO {
+        val entity: Person = mapper.dtoToEntity(person)
+        val saved = op.insert(entity.javaClass).usingAndAwait(entity)
+        return mapper.entityToDTO(saved)
     }
 }

@@ -3,6 +3,7 @@ package com.history.tree.mappers
 import com.history.tree.dto.MarriageDTO
 import com.history.tree.dto.RelationshipDTO
 import com.history.tree.model.Relationship
+import org.mapstruct.InheritInverseConfiguration
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 
@@ -10,7 +11,14 @@ import org.mapstruct.Mapping
 interface RelationshipMapper {
 
     @Mapping(target = "marriage", source = "marriage")
-    fun relationshipToDto(relationship: Relationship, marriage: MarriageDTO): RelationshipDTO
+    @Mapping(target = "id", source = "relationship.id")
+    @Mapping(target = "personId", source = "relationship.personId")
+    @Mapping(target = "relatedPersonId", source = "relationship.relatedPersonId")
+    @Mapping(target = "relationshipType", source = "relationship.relationshipType")
+    @Mapping(target = "treeId", source = "relationship.treeId")
+    fun entityToDTO(relationship: Relationship, marriage: MarriageDTO?): RelationshipDTO
 
-    fun relationshipToDto(relationship: Relationship): RelationshipDTO
+    @InheritInverseConfiguration
+    @Mapping(target = "marriageId", source = "dto.marriage.id")
+    fun dtoToEntity(dto: RelationshipDTO): Relationship
 }

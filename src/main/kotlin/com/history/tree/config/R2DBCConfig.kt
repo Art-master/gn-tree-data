@@ -1,5 +1,9 @@
 package com.history.tree.config
 
+import com.history.tree.model.IntToEdgeTypeConverter
+import com.history.tree.model.IntToRelationshipTypeConverter
+import com.history.tree.model.EdgeTypeToIntConverter
+import com.history.tree.model.RelationshipTypeToIntConverter
 import io.r2dbc.pool.PoolingConnectionFactoryProvider
 import io.r2dbc.spi.ConnectionFactories
 import io.r2dbc.spi.ConnectionFactory
@@ -11,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration
+import org.springframework.data.r2dbc.convert.R2dbcCustomConversions
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
 import org.springframework.r2dbc.connection.R2dbcTransactionManager
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer
@@ -76,5 +81,16 @@ R2DBCConfig : AbstractR2dbcConfiguration() {
         val initializer = ConnectionFactoryInitializer()
         initializer.setConnectionFactory(connectionFactory!!)
         return initializer
+    }
+
+    @Bean
+    override fun r2dbcCustomConversions(): R2dbcCustomConversions {
+        val converters = listOf(
+            EdgeTypeToIntConverter(),
+            IntToEdgeTypeConverter(),
+            RelationshipTypeToIntConverter(),
+            IntToRelationshipTypeConverter()
+        )
+        return R2dbcCustomConversions(storeConversions, converters)
     }
 }

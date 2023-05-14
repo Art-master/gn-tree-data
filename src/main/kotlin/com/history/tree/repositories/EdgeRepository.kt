@@ -1,9 +1,9 @@
 package com.history.tree.repositories
 
-import com.history.tree.model.Marriage
+import com.history.tree.model.Edge
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface MarriageRepository : CommonTreeRepository<Marriage>, CoroutineCrudRepository<Marriage, UUID>
+interface EdgeRepository : CommonTreeRepository<Edge>, CoroutineCrudRepository<Edge, UUID>

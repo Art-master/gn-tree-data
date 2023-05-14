@@ -1,0 +1,11 @@
+package com.history.tree.dto
+
+import java.util.*
+
+data class PersonViewDTO(
+    val id: UUID,
+    val coordinateX: Float,
+    val coordinateY: Float,
+    val personId: UUID,
+    val treeId: UUID,
+)

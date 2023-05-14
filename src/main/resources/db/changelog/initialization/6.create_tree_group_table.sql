@@ -4,8 +4,8 @@
 
 CREATE TABLE IF NOT EXISTS tree_group
 (
-    id bigint NOT NULL,
-    CONSTRAINT "Test_pkey" PRIMARY KEY (id)
+    id uuid NOT NULL,
+    CONSTRAINT "tree_group_pkey" PRIMARY KEY (id)
 );
 
 COMMENT ON TABLE tree_group

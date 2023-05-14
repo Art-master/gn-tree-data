@@ -4,26 +4,19 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Version
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
-import java.util.*
+import java.util.UUID
 
-@Table("relationship")
-data class Relationship(
-
+@Table("linked_edges")
+data class PersonLinkedEdges(
     @Id
     @Column("id")
     val id: UUID,
 
-    @Column("marriage_id")
-    val marriageId: UUID? = null,
+    @Column("person_view_id")
+    val personViewId: UUID,
 
-    @Column("person_id")
-    val personId: UUID,
-
-    @Column("related_person_id")
-    val relatedPersonId: UUID,
-
-    @Column("relationship_type")
-    val relationshipType: RelationshipType,
+    @Column("edge_id")
+    val edgeId: UUID,
 
     @Column("tree_id")
     var treeId: UUID,
