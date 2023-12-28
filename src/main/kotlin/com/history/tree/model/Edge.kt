@@ -1,7 +1,6 @@
 package com.history.tree.model
 
 import org.springframework.data.annotation.Id
-import org.springframework.data.annotation.Version
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.util.UUID
@@ -12,20 +11,20 @@ data class Edge(
     @Column("id")
     val id: UUID,
 
-    @Column("start_coordinate_x")
-    val startCoordinateX: Float,
+    @Column("x1")
+    val x1: Float,
 
-    @Column("start_coordinate_y")
-    val startCoordinateY: Float,
+    @Column("y1")
+    val y1: Float,
 
-    @Column("end_coordinate_x")
-    val endCoordinateX: Float,
+    @Column("x2")
+    val x2: Float,
 
-    @Column("end_coordinate_y")
-    val endCoordinateY: Float,
+    @Column("y2")
+    val y2: Float,
 
-    @Column("edge_type")
-    val edgeType: EdgeType,
+    @Column("type")
+    val type: EdgeType,
 
     @Column("tree_id")
     var treeId: UUID,

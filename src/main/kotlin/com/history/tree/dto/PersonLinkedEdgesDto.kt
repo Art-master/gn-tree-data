@@ -2,7 +2,7 @@ package com.history.tree.dto
 
 import java.util.UUID
 
-data class PersonLinkedEdgesDTO(
+data class PersonLinkedEdgesDto(
     val id: UUID,
     val personViewId: UUID,
     val edgeId: UUID,

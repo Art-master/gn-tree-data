@@ -5,8 +5,8 @@
 CREATE TABLE IF NOT EXISTS person_view
 (
     id uuid NOT NULL,
-    coordinate_x numeric,
-	coordinate_y numeric,
+    x numeric,
+	y numeric,
 	person_id uuid,
 	tree_id uuid,
     CONSTRAINT person_view_pkey PRIMARY KEY (id),
@@ -28,10 +28,10 @@ COMMENT ON TABLE person_view
 COMMENT ON COLUMN person_view.id
     IS 'Unique identifier';
 
-COMMENT ON COLUMN person_view.coordinate_x
+COMMENT ON COLUMN person_view.x
     IS 'Coordinate X of person icon on frontend';
 
-COMMENT ON COLUMN person_view.coordinate_y
+COMMENT ON COLUMN person_view.y
     IS 'Coordinate Y of person icon on frontend';
 
 COMMENT ON COLUMN person_view.person_id

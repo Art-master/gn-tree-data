@@ -5,11 +5,11 @@
 CREATE TABLE IF NOT EXISTS edge
 (
     id uuid NOT NULL,
-    start_coordinate_x numeric,
-	start_coordinate_y numeric,
-	end_coordinate_x numeric,
-    end_coordinate_y numeric,
-	edge_type integer,
+    x1 numeric,
+	y1 numeric,
+	x2 numeric,
+    y2 numeric,
+	type integer,
 	tree_id uuid,
     CONSTRAINT edge_pkey PRIMARY KEY (id),
     CONSTRAINT tree_id FOREIGN KEY (tree_id)
@@ -25,19 +25,19 @@ COMMENT ON TABLE edge
 COMMENT ON COLUMN edge.id
     IS 'Unique identifier';
 
-COMMENT ON COLUMN edge.start_coordinate_x
+COMMENT ON COLUMN edge.x1
     IS 'Coordinate X of edge start on frontend';
 
-COMMENT ON COLUMN edge.start_coordinate_y
+COMMENT ON COLUMN edge.y1
     IS 'Coordinate Y of edge start on frontend';
 
-COMMENT ON COLUMN edge.end_coordinate_x
+COMMENT ON COLUMN edge.x2
     IS 'Coordinate X of edge end on frontend';
 
-COMMENT ON COLUMN edge.end_coordinate_y
+COMMENT ON COLUMN edge.y2
     IS 'Coordinate Y of edge end on frontend';
 
-COMMENT ON COLUMN edge.edge_type
+COMMENT ON COLUMN edge.type
     IS 'Edge type (for example: support, marriage, child)';
 
 COMMENT ON COLUMN edge.tree_id

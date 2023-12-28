@@ -1,7 +1,6 @@
 package com.history.tree.controllers
 
-import com.history.tree.dto.PersonDTO
-import com.history.tree.dto.RelationshipDTO
+import com.history.tree.dto.RelationshipDto
 import com.history.tree.services.RelationshipService
 import kotlinx.coroutines.flow.Flow
 import org.springframework.web.bind.annotation.*
@@ -12,17 +11,17 @@ import java.util.*
 class RelationshipController(val relationshipService: RelationshipService) {
 
     @GetMapping
-    suspend fun getById(@RequestParam id: UUID): RelationshipDTO? {
+    suspend fun getById(@RequestParam id: UUID): RelationshipDto? {
         return relationshipService.findById(id)
     }
 
     @GetMapping("/get_by_tree")
-    suspend fun getAllByTreeId(@RequestParam treeId: UUID): Flow<RelationshipDTO> {
+    suspend fun getAllByTreeId(@RequestParam treeId: UUID): Flow<RelationshipDto> {
         return relationshipService.getByTreeId(treeId)
     }
 
     @PostMapping
-    suspend fun create(@RequestBody relationship: RelationshipDTO): RelationshipDTO {
+    suspend fun create(@RequestBody relationship: RelationshipDto): RelationshipDto {
         return relationshipService.create(relationship)
     }
 
@@ -32,7 +31,7 @@ class RelationshipController(val relationshipService: RelationshipService) {
     }
 
     @PatchMapping
-    suspend fun edit(@RequestBody relationship: RelationshipDTO): RelationshipDTO {
+    suspend fun edit(@RequestBody relationship: RelationshipDto): RelationshipDto {
         return relationshipService.edit(relationship)
     }
 }

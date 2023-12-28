@@ -4,7 +4,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
 
-class UserDTO : UserDetails {
+class UserDto : UserDetails {
 
     var id: Long = 0
     var name: String = ""

@@ -1,7 +1,7 @@
 package com.history.tree.services
 
-import com.history.tree.dto.MarriageDTO
-import com.history.tree.dto.RelationshipDTO
+import com.history.tree.dto.MarriageDto
+import com.history.tree.dto.RelationshipDto
 import com.history.tree.mappers.MarriageMapper
 import com.history.tree.mappers.RelationshipMapper
 import com.history.tree.model.Marriage
@@ -23,25 +23,25 @@ class RelationshipService(
     val marriageMapper: MarriageMapper,
     val op: FluentR2dbcOperations
 ) {
-    suspend fun findById(id: UUID): RelationshipDTO? {
+    suspend fun findById(id: UUID): RelationshipDto? {
         val relationship = relationshipRepository.findById(id)
         relationship ?: return null
         val marriageDTO = getMarriageDTO(relationship.marriageId)
         return relationshipMapper.entityToDTO(relationship, marriageDTO)
     }
 
-    suspend fun getMarriageDTO(marriageId: UUID?): MarriageDTO? {
+    suspend fun getMarriageDTO(marriageId: UUID?): MarriageDto? {
         val marriage = if (marriageId != null)
             marriageRepository.findById(marriageId) else null
         return if (marriage != null) marriageMapper.entityToDTO(marriage) else null
     }
 
-    suspend fun getByTreeId(treeId: UUID): Flow<RelationshipDTO> {
+    suspend fun getByTreeId(treeId: UUID): Flow<RelationshipDto> {
         return relationshipRepository.findAllByTreeId(treeId)
             .map { r -> relationshipMapper.entityToDTO(r, getMarriageDTO(r.marriageId)) }
     }
 
-    suspend fun create(relationship: RelationshipDTO): RelationshipDTO {
+    suspend fun create(relationship: RelationshipDto): RelationshipDto {
         if (relationship.marriage != null) {
             val marriageEntity: Marriage = marriageMapper.dtoToEntity(relationship.marriage)
             op.insert(marriageEntity.javaClass).usingAndAwait(marriageEntity)
@@ -56,7 +56,7 @@ class RelationshipService(
         return relationshipRepository.deleteById(id)
     }
 
-    suspend fun edit(relationship: RelationshipDTO): RelationshipDTO {
+    suspend fun edit(relationship: RelationshipDto): RelationshipDto {
         if (relationship.marriage != null) {
             val marriageEntity: Marriage = marriageMapper.dtoToEntity(relationship.marriage)
             marriageRepository.save(marriageEntity)

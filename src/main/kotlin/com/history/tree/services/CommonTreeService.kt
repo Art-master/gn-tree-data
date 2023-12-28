@@ -1,8 +1,6 @@
 package com.history.tree.services
 
-import com.history.tree.dto.TreeDTO
 import com.history.tree.mappers.EntityMapper
-import com.history.tree.model.Tree
 import com.history.tree.repositories.CommonTreeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
