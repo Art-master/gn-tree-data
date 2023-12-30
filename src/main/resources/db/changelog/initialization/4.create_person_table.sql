@@ -8,12 +8,12 @@ CREATE TABLE IF NOT EXISTS person
     first_name text,
     last_name text,
     patronymic text,
-    tree_id uuid,
+    tree_view_id uuid,
     gender "char" NOT NULL,
     birth_date date,
     date_of_death date,
     CONSTRAINT person_pkey PRIMARY KEY (id),
-    CONSTRAINT tree_id FOREIGN KEY (tree_id)
+    CONSTRAINT tree_view_id FOREIGN KEY (tree_view_id)
         REFERENCES tree (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
@@ -32,8 +32,8 @@ COMMENT ON COLUMN person.last_name
 COMMENT ON COLUMN person.patronymic
     IS 'Patronymic of person';
 
-COMMENT ON COLUMN person.tree_id
-    IS 'Tree identifier';
+COMMENT ON COLUMN person.tree_view_id
+    IS 'Tree view identifier';
 
 COMMENT ON COLUMN person.gender
     IS 'Gender of person';

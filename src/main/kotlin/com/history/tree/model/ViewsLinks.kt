@@ -17,6 +17,6 @@ data class ViewsLinks(
     @Column("linked_view_id")
     val linkedViewId: UUID,
 
-    @Column("tree_id")
-    val treeId: UUID,
+    @Column("tree_view_id")
+    val treeViewId: UUID,
 )

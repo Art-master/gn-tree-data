@@ -11,8 +11,8 @@ data class PersonView(
     @Column("id")
     val id: UUID,
 
-    @Column("tree_id")
-    var treeId: UUID,
+    @Column("tree_view_id")
+    var treeViewId: UUID,
 
     @Column("x")
     val x: Float,

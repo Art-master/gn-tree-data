@@ -8,14 +8,14 @@ CREATE TABLE IF NOT EXISTS person_view
     x numeric,
 	y numeric,
 	person_id uuid,
-	tree_id uuid,
+	tree_view_id uuid,
     CONSTRAINT person_view_pkey PRIMARY KEY (id),
     CONSTRAINT person_id FOREIGN KEY (person_id)
         REFERENCES person (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
         NOT VALID,
-    CONSTRAINT tree_id FOREIGN KEY (tree_id)
+    CONSTRAINT tree_view_id FOREIGN KEY (tree_view_id)
         REFERENCES tree (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
@@ -37,5 +37,5 @@ COMMENT ON COLUMN person_view.y
 COMMENT ON COLUMN person_view.person_id
     IS 'Person identifier';
 
-COMMENT ON COLUMN person_view.tree_id
-    IS 'Tree identifier';
+COMMENT ON COLUMN person_view.tree_view_id
+    IS 'Tree view identifier';

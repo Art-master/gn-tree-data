@@ -5,7 +5,7 @@ import java.util.*
 
 data class EdgeDto(
     val id: UUID,
-    val treeId: UUID,
+    val treeViewId: UUID,
     val x1: Float,
     val y1: Float,
     val x2: Float,

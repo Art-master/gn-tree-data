@@ -2,7 +2,7 @@ package com.history.tree.dto
 
 import java.util.UUID
 
-data class ViewsLinksDto(
+data class ViewsLinkDto(
     val id: UUID,
     val viewId: UUID,
     val linkedViewId: UUID,

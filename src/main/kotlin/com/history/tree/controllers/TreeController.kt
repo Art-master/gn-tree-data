@@ -4,7 +4,6 @@ import com.history.tree.dto.FullTreeDataDto
 import com.history.tree.dto.TreeDto
 import com.history.tree.services.TreeService
 import kotlinx.coroutines.flow.Flow
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
@@ -33,7 +32,8 @@ class TreeController(val treeService: TreeService) {
     }
 
     @PostMapping("save_all")
-    suspend fun saveAll(@RequestBody treeData: FullTreeDataDto) {
+    suspend fun saveAll(@RequestParam(name = "tree_view_id") treeViewId: UUID,
+                        @RequestBody treeData: FullTreeDataDto) {
         treeService.saveAll(treeData)
     }
 

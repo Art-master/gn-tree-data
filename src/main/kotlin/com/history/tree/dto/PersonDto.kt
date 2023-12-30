@@ -5,7 +5,7 @@ import java.util.*
 
 data class PersonDto(
         val id: UUID,
-        val treeId: UUID,
+        val treeViewId: UUID,
         val firstName: String,
         val lastName: String,
         val patronymic: String?,

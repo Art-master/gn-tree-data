@@ -1,6 +1,6 @@
 package com.history.tree.controllers
 
-import com.history.tree.dto.ViewsLinksDto
+import com.history.tree.dto.ViewsLinkDto
 import com.history.tree.services.ViewsLinksService
 import kotlinx.coroutines.flow.Flow
 import org.springframework.web.bind.annotation.*
@@ -11,7 +11,7 @@ import java.util.*
 class ViewsLinksController(val service: ViewsLinksService) {
 
     @GetMapping(path = ["/get_by_tree"], produces = [org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE])
-    suspend fun getAllByTreeId(@RequestParam treeId: UUID): Flow<ViewsLinksDto> {
+    suspend fun getAllByTreeId(@RequestParam treeId: UUID): Flow<ViewsLinkDto> {
         return service.getByTreeId(treeId)
     }
 }

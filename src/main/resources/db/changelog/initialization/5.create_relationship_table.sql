@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS relationship
     related_person_id uuid NOT NULL,
     relationship_type smallint NOT NULL,
     marriage_id uuid,
-    tree_id uuid,
+    tree_view_id uuid,
     CONSTRAINT relationship_pkey PRIMARY KEY (id),
     CONSTRAINT marriage_key FOREIGN KEY (marriage_id)
         REFERENCES marriage (id) MATCH SIMPLE
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS relationship
         ON UPDATE NO ACTION
         ON DELETE CASCADE
         NOT VALID,
-    CONSTRAINT tree_id FOREIGN KEY (tree_id)
+    CONSTRAINT tree_view_id FOREIGN KEY (tree_view_id)
         REFERENCES tree (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
@@ -51,5 +51,5 @@ COMMENT ON COLUMN relationship.relationship_type
 COMMENT ON COLUMN relationship.marriage_id
     IS 'Mariage identifier';
 
-COMMENT ON COLUMN relationship.tree_id
-    IS 'Tree identifier';
+COMMENT ON COLUMN relationship.tree_view_id
+    IS 'Tree view identifier';

@@ -26,6 +26,6 @@ data class Edge(
     @Column("type")
     val type: EdgeType,
 
-    @Column("tree_id")
-    var treeId: UUID,
+    @Column("tree_view_id")
+    var treeViewId: UUID,
 )

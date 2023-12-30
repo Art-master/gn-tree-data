@@ -1,7 +1,6 @@
 package com.history.tree.model
 
 import org.springframework.data.annotation.Id
-import org.springframework.data.annotation.Version
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDate
@@ -22,8 +21,8 @@ data class Person (
     @Column("patronymic")
     var patronymic: String?,
 
-    @Column("tree_id")
-    var treeId: UUID,
+    @Column("tree_view_id")
+    var treeViewId: UUID,
 
     @Column("gender")
     var gender: Char,

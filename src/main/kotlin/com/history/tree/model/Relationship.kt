@@ -1,7 +1,6 @@
 package com.history.tree.model
 
 import org.springframework.data.annotation.Id
-import org.springframework.data.annotation.Version
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.util.*
@@ -25,6 +24,6 @@ data class Relationship(
     @Column("relationship_type")
     val relationshipType: RelationshipType,
 
-    @Column("tree_id")
-    var treeId: UUID,
+    @Column("tree_view_id")
+    var treeViewId: UUID,
 )
