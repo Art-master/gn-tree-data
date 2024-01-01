@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS marriage
     tree_view_id uuid,
     CONSTRAINT marriage_pkey PRIMARY KEY (id),
     CONSTRAINT tree_view_id FOREIGN KEY (tree_view_id)
-        REFERENCES tree (id) MATCH SIMPLE
+        REFERENCES tree_view (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
         NOT VALID

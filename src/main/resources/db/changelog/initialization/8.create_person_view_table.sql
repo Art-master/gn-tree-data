@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS person_view
         ON DELETE CASCADE
         NOT VALID,
     CONSTRAINT tree_view_id FOREIGN KEY (tree_view_id)
-        REFERENCES tree (id) MATCH SIMPLE
+        REFERENCES tree_view (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
         NOT VALID

@@ -4,8 +4,8 @@ import java.util.*
 
 data class PersonViewDto(
     val id: UUID,
-    val coordinateX: Float,
-    val coordinateY: Float,
+    val x: Float,
+    val y: Float,
     val personId: UUID,
     val treeViewId: UUID,
 )

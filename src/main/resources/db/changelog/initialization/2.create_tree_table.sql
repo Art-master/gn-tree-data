@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset goltsev_GN:create_tree_table_09.02.2023
+--changeset 2:goltsev_GN:create_tree_table_09.02.2023
 
 CREATE TABLE IF NOT EXISTS tree
 (
