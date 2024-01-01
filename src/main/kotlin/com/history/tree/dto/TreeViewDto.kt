@@ -4,5 +4,8 @@ import java.util.*
 
 data class TreeViewDto(
     val id: UUID,
-    val color: Int
+    val treeId: UUID,
+    val color: Int,
+    val name: String,
+    val description: String,
 )
