@@ -12,6 +12,6 @@ class RelationshipController(val relationshipService: RelationshipService) {
 
     @GetMapping("/get_by_tree")
     suspend fun getAllByTreeId(@RequestParam treeId: UUID): Flow<RelationshipDto> {
-        return relationshipService.getByTreeId(treeId)
+        return relationshipService.getByTreeViewId(treeId)
     }
 }

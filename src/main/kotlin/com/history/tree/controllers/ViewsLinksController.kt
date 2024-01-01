@@ -12,6 +12,6 @@ class ViewsLinksController(val service: ViewsLinksService) {
 
     @GetMapping(path = ["/get_by_tree"], produces = [org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE])
     suspend fun getAllByTreeId(@RequestParam treeId: UUID): Flow<ViewsLinkDto> {
-        return service.getByTreeId(treeId)
+        return service.getByTreeViewId(treeId)
     }
 }

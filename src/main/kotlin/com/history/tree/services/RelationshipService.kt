@@ -36,8 +36,8 @@ class RelationshipService(
         return if (marriage != null) marriageMapper.entityToDTO(marriage) else null
     }
 
-    suspend fun getByTreeId(treeId: UUID): Flow<RelationshipDto> {
-        return relationshipRepository.findAllByTreeId(treeId)
+    suspend fun getByTreeViewId(treeId: UUID): Flow<RelationshipDto> {
+        return relationshipRepository.findAllByTreeViewId(treeId)
             .map { r -> relationshipMapper.entityToDTO(r, getMarriageDTO(r.marriageId)) }
     }
 

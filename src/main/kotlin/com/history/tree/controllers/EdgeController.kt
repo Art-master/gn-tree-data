@@ -12,6 +12,6 @@ class EdgeController(val edgeService: EdgeService) {
 
     @GetMapping(path = ["/get_by_tree_view"], produces = [org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE])
     suspend fun getAllByTreViewId(@RequestParam id: UUID): Flow<EdgeDto> {
-        return edgeService.getByTreeId(id)
+        return edgeService.getByTreeViewId(id)
     }
 }

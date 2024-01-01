@@ -12,7 +12,7 @@ class PersonController(val personService: PersonService) {
 
     @GetMapping(path = ["/get_by_tree_view"], produces = [org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE])
     suspend fun getAllByTreViewId(@RequestParam id: UUID): Flow<PersonDto> {
-        return personService.getByTreeId(id)
+        return personService.getByTreeViewId(id)
     }
 
 }

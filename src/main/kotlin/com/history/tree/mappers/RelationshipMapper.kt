@@ -15,7 +15,7 @@ interface RelationshipMapper {
     @Mapping(target = "personId", source = "relationship.personId")
     @Mapping(target = "relatedPersonId", source = "relationship.relatedPersonId")
     @Mapping(target = "relationshipType", source = "relationship.relationshipType")
-    @Mapping(target = "treeId", source = "relationship.treeId")
+    @Mapping(target = "treeViewId", source = "relationship.treeViewId")
     fun entityToDTO(relationship: Relationship, marriage: MarriageDto?): RelationshipDto
 
     @InheritInverseConfiguration

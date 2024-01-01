@@ -16,8 +16,8 @@ open class CommonTreeService<ENTITY, DTO>(
         return mapper.entityToDTO(entity)
     }
 
-    open suspend fun getByTreeId(treeId: UUID): Flow<DTO> {
-        return repository.findAllByTreeId(treeId).map { entity -> mapper.entityToDTO(entity) }
+    open suspend fun getByTreeViewId(treeId: UUID): Flow<DTO> {
+        return repository.findAllByTreeViewId(treeId).map { entity -> mapper.entityToDTO(entity) }
     }
     
     suspend fun delete(id: UUID) {
