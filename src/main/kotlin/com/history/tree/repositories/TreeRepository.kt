@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface TreeRepository : CoroutineCrudRepository<Tree, UUID>
+interface TreeRepository : CoroutineCrudRepository<Tree, UUID> {
+    suspend fun findByUserId(userId: String)
+
+}

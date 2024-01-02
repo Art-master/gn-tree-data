@@ -16,4 +16,10 @@ data class Tree(
 
     @Column("description")
     val description: String,
+
+    @Column("main_tree_view_id")
+    val mainTreeViewId: UUID,
+
+    @Column("user_id")
+    val userId: Long,
 )

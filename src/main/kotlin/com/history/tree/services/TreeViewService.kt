@@ -4,6 +4,7 @@ import com.history.tree.dto.TreeViewDto
 import com.history.tree.mappers.TreeViewMapper
 import com.history.tree.model.TreeView
 import com.history.tree.repositories.TreeViewRepository
+import kotlinx.coroutines.flow.Flow
 import org.springframework.data.r2dbc.core.FluentR2dbcOperations
 import org.springframework.data.r2dbc.core.usingAndAwait
 import org.springframework.stereotype.Service
@@ -34,5 +35,9 @@ class TreeViewService(
         val entity: TreeView = mapper.dtoToEntity(tree)
         val saved = repository.save(entity)
         return mapper.entityToDTO(saved)
+    }
+
+    fun findAllByTreeId(id: Long): Flow<TreeViewDto> {
+        TODO("Not yet implemented")
     }
 }

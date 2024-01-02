@@ -5,6 +5,9 @@ import com.history.tree.dto.TreeDto
 import com.history.tree.mappers.TreeMapper
 import com.history.tree.model.Tree
 import com.history.tree.repositories.TreeRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.springframework.data.r2dbc.core.FluentR2dbcOperations
@@ -17,6 +20,9 @@ class TreeService(
     val repository: TreeRepository, val mapper: TreeMapper,
     val op: FluentR2dbcOperations
 ) {
+
+    val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
     suspend fun findById(id: UUID): TreeDto? {
         val entity = repository.findById(id)
         entity ?: return null
@@ -26,11 +32,6 @@ class TreeService(
     suspend fun findAllByUserId(id: Long): Flow<TreeDto> {
         return repository.findAll()
             .map { entity -> mapper.entityToDTO(entity) } //TODO Use user id
-    }
-
-    suspend fun findAll(): Flow<TreeDto> {
-        return repository.findAll()
-            .map { entity -> mapper.entityToDTO(entity) }
     }
 
     suspend fun create(tree: TreeDto): TreeDto {
