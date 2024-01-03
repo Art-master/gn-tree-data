@@ -1,35 +1,38 @@
 package com.history.tree.model
 
+import com.history.tree.schemas.CommonSchema
+import com.history.tree.schemas.PersonSchema
+import com.history.tree.schemas.PersonSchema.PERSON
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDate
 import java.util.*
 
-@Table("person")
-data class Person (
+@Table(PERSON)
+data class Person(
     @Id
-    @Column("id")
+    @Column(CommonSchema.id)
     val id: UUID,
 
-    @Column("first_name")
+    @Column(PersonSchema.first_name)
     var firstName: String?,
 
-    @Column("last_name")
+    @Column(PersonSchema.last_name)
     var lastName: String?,
 
-    @Column("patronymic")
+    @Column(PersonSchema.patronymic)
     var patronymic: String?,
 
-    @Column("tree_view_id")
+    @Column(PersonSchema.tree_view_id)
     var treeViewId: UUID,
 
-    @Column("gender")
+    @Column(PersonSchema.gender)
     var gender: Char,
 
-    @Column("birth_date")
+    @Column(PersonSchema.birth_date)
     var birthDate: LocalDate?,
 
-    @Column("date_of_death")
-    var dateOfDeath: LocalDate?,
+    @Column(PersonSchema.date_of_death)
+    var dateOfDeath: LocalDate?
 )

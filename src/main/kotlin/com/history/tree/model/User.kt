@@ -1,28 +1,28 @@
 package com.history.tree.model
 
-import com.history.tree.schemas.UserSchema
+import com.history.tree.schemas.PersonSchema
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 
 
-@Table(UserSchema.TABLE_NAME)
+@Table(PersonSchema.PERSON)
 class User(
 
     @Id
-    @Column(UserSchema.ID)
+    @Column(PersonSchema.ID)
     var id: Long = 0,
 
-    @Column(UserSchema.NAME)
+    @Column(PersonSchema.NAME)
     var name: String = "",
 
     //@Column(UserSchema.LAST_NAME)
     // var lastName: String = "",
 
-    @Column(UserSchema.LOGIN)
+    @Column(PersonSchema.LOGIN)
     var login: String = "",
 
-    @Column(UserSchema.PASSWORD_HASH)
+    @Column(PersonSchema.PASSWORD_HASH)
     var password: String = "",
 
     //@Column(UserSchema.AVATAR_ID)
