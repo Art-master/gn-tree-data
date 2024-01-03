@@ -34,7 +34,7 @@ class TreeController(val treeService: TreeService) {
     @PostMapping("save_all")
     suspend fun saveAll(@RequestParam(name = "tree_view_id") treeViewId: UUID,
                         @RequestBody treeData: FullTreeDataDto) {
-        treeService.saveAll(treeData)
+        treeService.saveAll(treeViewId, treeData)
     }
 
     @DeleteMapping

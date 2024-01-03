@@ -22,23 +22,23 @@ class RelationshipService(
     val relationshipMapper: RelationshipMapper,
     val marriageMapper: MarriageMapper,
     val op: FluentR2dbcOperations
-) {
-    suspend fun findById(id: UUID): RelationshipDto? {
+) : CommonTreeService<Relationship, RelationshipDto>(relationshipRepository, relationshipMapper) {
+    override suspend fun findById(id: UUID): RelationshipDto? {
         val relationship = relationshipRepository.findById(id)
         relationship ?: return null
-        val marriageDTO = getMarriageDTO(relationship.marriageId)
-        return relationshipMapper.entityToDTO(relationship, marriageDTO)
+        val marriageDTO = getMarriageDto(relationship.marriageId)
+        return relationshipMapper.entityToDto(relationship, marriageDTO)
     }
 
-    suspend fun getMarriageDTO(marriageId: UUID?): MarriageDto? {
+    suspend fun getMarriageDto(marriageId: UUID?): MarriageDto? {
         val marriage = if (marriageId != null)
             marriageRepository.findById(marriageId) else null
-        return if (marriage != null) marriageMapper.entityToDTO(marriage) else null
+        return if (marriage != null) marriageMapper.entityToDto(marriage) else null
     }
 
-    suspend fun getByTreeViewId(treeId: UUID): Flow<RelationshipDto> {
+    override suspend fun getByTreeViewId(treeId: UUID): Flow<RelationshipDto> {
         return relationshipRepository.findAllByTreeViewId(treeId)
-            .map { r -> relationshipMapper.entityToDTO(r, getMarriageDTO(r.marriageId)) }
+            .map { r -> relationshipMapper.entityToDto(r, getMarriageDto(r.marriageId)) }
     }
 
     suspend fun create(relationship: RelationshipDto): RelationshipDto {
@@ -48,23 +48,23 @@ class RelationshipService(
         }
         val relationshipEntity: Relationship = relationshipMapper.dtoToEntity(relationship)
         val saved = op.insert(relationshipEntity.javaClass).usingAndAwait(relationshipEntity)
-        val marriageDTO = getMarriageDTO(saved.marriageId)
-        return relationshipMapper.entityToDTO(saved, marriageDTO)
+        val marriageDTO = getMarriageDto(saved.marriageId)
+        return relationshipMapper.entityToDto(saved, marriageDTO)
     }
 
-    suspend fun delete(id: UUID) {
+    override suspend fun delete(id: UUID) {
         return relationshipRepository.deleteById(id)
     }
 
-    suspend fun edit(relationship: RelationshipDto): RelationshipDto {
-        if (relationship.marriage != null) {
-            val marriageEntity: Marriage = marriageMapper.dtoToEntity(relationship.marriage)
+    override suspend fun edit(entityDto: RelationshipDto): RelationshipDto {
+        if (entityDto.marriage != null) {
+            val marriageEntity: Marriage = marriageMapper.dtoToEntity(entityDto.marriage)
             marriageRepository.save(marriageEntity)
         }
-        val relationshipEntity: Relationship = relationshipMapper.dtoToEntity(relationship)
+        val relationshipEntity: Relationship = relationshipMapper.dtoToEntity(entityDto)
         val savedRelationship = relationshipRepository.save(relationshipEntity)
-        val marriageDTO = getMarriageDTO(savedRelationship.marriageId)
-        return relationshipMapper.entityToDTO(savedRelationship, marriageDTO)
+        val marriageDTO = getMarriageDto(savedRelationship.marriageId)
+        return relationshipMapper.entityToDto(savedRelationship, marriageDTO)
     }
 
 }

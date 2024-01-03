@@ -18,13 +18,13 @@ class TreeViewService(
     suspend fun findById(id: UUID): TreeViewDto? {
         val entity = repository.findById(id)
         entity ?: return null
-        return mapper.entityToDTO(entity)
+        return mapper.entityToDto(entity)
     }
 
     suspend fun create(tree: TreeViewDto): TreeViewDto {
         val entity: TreeView = mapper.dtoToEntity(tree)
         val saved = op.insert(entity.javaClass).usingAndAwait(entity)
-        return mapper.entityToDTO(saved)
+        return mapper.entityToDto(saved)
     }
 
     suspend fun delete(id: UUID) {
@@ -34,7 +34,7 @@ class TreeViewService(
     suspend fun edit(tree: TreeViewDto): TreeViewDto {
         val entity: TreeView = mapper.dtoToEntity(tree)
         val saved = repository.save(entity)
-        return mapper.entityToDTO(saved)
+        return mapper.entityToDto(saved)
     }
 
     fun findAllByTreeId(id: Long): Flow<TreeViewDto> {

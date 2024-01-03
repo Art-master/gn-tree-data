@@ -10,14 +10,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 import org.springframework.data.r2dbc.core.FluentR2dbcOperations
 import org.springframework.data.r2dbc.core.usingAndAwait
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
 class TreeService(
-    val repository: TreeRepository, val mapper: TreeMapper,
+    val repository: TreeRepository,
+    val mapper: TreeMapper,
+    val treeViewService: TreeViewService,
+    val edgeService: EdgeService,
+    val personViewService: PersonViewService,
+    val personService: PersonService,
+    val relationshipService: RelationshipService,
+    val viewsLinksService: ViewsLinksService,
     val op: FluentR2dbcOperations
 ) {
 
@@ -26,18 +36,21 @@ class TreeService(
     suspend fun findById(id: UUID): TreeDto? {
         val entity = repository.findById(id)
         entity ?: return null
-        return mapper.entityToDTO(entity)
+        return mapper.entityToDto(entity)
     }
 
     suspend fun findAllByUserId(id: Long): Flow<TreeDto> {
         return repository.findAll()
-            .map { entity -> mapper.entityToDTO(entity) } //TODO Use user id
+            .map { entity -> mapper.entityToDto(entity) } //TODO Use user id
     }
 
+    @Transactional
     suspend fun create(tree: TreeDto): TreeDto {
         val entity: Tree = mapper.dtoToEntity(tree)
         val saved = op.insert(entity.javaClass).usingAndAwait(entity)
-        return mapper.entityToDTO(saved)
+
+        treeViewService.create(tree.mainTreeView)
+        return mapper.entityToDto(saved)
     }
 
     suspend fun delete(id: UUID) {
@@ -47,10 +60,22 @@ class TreeService(
     suspend fun edit(tree: TreeDto): TreeDto {
         val entity: Tree = mapper.dtoToEntity(tree)
         val saved = repository.save(entity)
-        return mapper.entityToDTO(saved)
+        return mapper.entityToDto(saved)
     }
 
-    fun saveAll(treeData: FullTreeDataDto) {
+    @Transactional
+    fun saveAll(treeViewId: UUID, treeData: FullTreeDataDto) {
+        coroutineScope.launch {
+            val deleteAllEntities = coroutineScope.launch {
+                personService.deleteByTreeViewId(treeViewId)
+                personViewService.deleteByTreeViewId(treeViewId)
+                edgeService.deleteByTreeViewId(treeViewId)
+                relationshipService.deleteByTreeViewId(treeViewId)
+                viewsLinksService.deleteByTreeViewId(treeViewId)
+            }
+            deleteAllEntities.wait()
+
+        }
 
     }
 }

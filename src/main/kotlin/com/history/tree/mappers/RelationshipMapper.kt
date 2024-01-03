@@ -8,7 +8,7 @@ import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 
 @Mapper(componentModel = "spring")
-interface RelationshipMapper {
+interface RelationshipMapper : EntityMapper<Relationship, RelationshipDto> {
 
     @Mapping(target = "marriage", source = "marriage")
     @Mapping(target = "id", source = "relationship.id")
@@ -16,9 +16,9 @@ interface RelationshipMapper {
     @Mapping(target = "relatedPersonId", source = "relationship.relatedPersonId")
     @Mapping(target = "relationshipType", source = "relationship.relationshipType")
     @Mapping(target = "treeViewId", source = "relationship.treeViewId")
-    fun entityToDTO(relationship: Relationship, marriage: MarriageDto?): RelationshipDto
+    fun entityToDto(relationship: Relationship, marriage: MarriageDto?): RelationshipDto
 
     @InheritInverseConfiguration
     @Mapping(target = "marriageId", source = "dto.marriage.id")
-    fun dtoToEntity(dto: RelationshipDto): Relationship
+    override fun dtoToEntity(dto: RelationshipDto): Relationship
 }

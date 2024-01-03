@@ -2,9 +2,13 @@ package com.history.tree.mappers
 
 import org.mapstruct.InheritInverseConfiguration
 
-interface EntityMapper<ENTITY, DTO> {
-    fun entityToDTO(entity: ENTITY): DTO
+/**
+ * @param E entity type
+ * @param D dto type
+ */
+interface EntityMapper<E, D> {
+    fun entityToDto(entity: E): D
 
     @InheritInverseConfiguration
-    fun dtoToEntity(dto: DTO): ENTITY
+    fun dtoToEntity(dto: D): E
 }

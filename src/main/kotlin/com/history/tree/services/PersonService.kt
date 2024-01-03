@@ -16,6 +16,6 @@ class PersonService(
     suspend fun create(person: PersonDto): PersonDto {
         val entity: Person = mapper.dtoToEntity(person)
         val saved = op.insert(entity.javaClass).usingAndAwait(entity)
-        return mapper.entityToDTO(saved)
+        return mapper.entityToDto(saved)
     }
 }

@@ -6,27 +6,35 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.*
 
-open class CommonTreeService<ENTITY, DTO>(
-    private val repository: CommonTreeRepository<ENTITY>,
-    private val mapper: EntityMapper<ENTITY, DTO>
+/**
+ * @param E entity type
+ * @param D dto type
+ */
+open class CommonTreeService<E, D>(
+    private val repository: CommonTreeRepository<E>,
+    private val mapper: EntityMapper<E, D>
 ) {
-    suspend fun findById(id: UUID): DTO? {
+    open suspend fun findById(id: UUID): D? {
         val entity = repository.findById(id)
         entity ?: return null
-        return mapper.entityToDTO(entity)
+        return mapper.entityToDto(entity)
     }
 
-    open suspend fun getByTreeViewId(treeId: UUID): Flow<DTO> {
-        return repository.findAllByTreeViewId(treeId).map { entity -> mapper.entityToDTO(entity) }
+    open suspend fun getByTreeViewId(treeId: UUID): Flow<D> {
+        return repository.findAllByTreeViewId(treeId).map { entity -> mapper.entityToDto(entity) }
     }
-    
-    suspend fun delete(id: UUID) {
+
+    open suspend fun delete(id: UUID) {
         return repository.deleteById(id)
     }
 
-    suspend fun edit(entityDTO: DTO): DTO {
-        val entity: ENTITY = mapper.dtoToEntity(entityDTO)
+    open suspend fun deleteByTreeViewId(treeViewId: UUID) {
+        return repository.deleteByTreeViewId(treeViewId)
+    }
+
+    open suspend fun edit(entityDto: D): D {
+        val entity: E = mapper.dtoToEntity(entityDto)
         val saved = repository.save(entity)
-        return mapper.entityToDTO(saved)
+        return mapper.entityToDto(saved)
     }
 }
