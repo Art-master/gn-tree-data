@@ -37,4 +37,9 @@ open class CommonTreeService<E, D>(
         val saved = repository.save(entity)
         return mapper.entityToDto(saved)
     }
+
+    open suspend fun saveAll(entities: List<D>) {
+        val entitiesModels: List<E> = entities.map { mapper.dtoToEntity(it) }
+        repository.saveAll(entitiesModels)
+    }
 }

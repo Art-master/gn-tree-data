@@ -67,7 +67,7 @@ class TreeService(
     fun saveAll(treeViewId: UUID, treeData: FullTreeDataDto) {
         coroutineScope.launch {
             val deleteAllEntities = coroutineScope.launch {
-                personService.deleteByTreeViewId(treeViewId)
+                //personService.deleteByTreeViewId(treeViewId) //TODO delete ?
                 personViewService.deleteByTreeViewId(treeViewId)
                 edgeService.deleteByTreeViewId(treeViewId)
                 relationshipService.deleteByTreeViewId(treeViewId)
@@ -75,6 +75,11 @@ class TreeService(
             }
             deleteAllEntities.wait()
 
+            personService.saveAll(treeData.persons)
+            personViewService.saveAll(treeData.personViews)
+            edgeService.saveAll(treeData.edges)
+            relationshipService.saveAll(treeData.relationships)
+            viewsLinksService.saveAll(treeData.viewsLinks)
         }
 
     }

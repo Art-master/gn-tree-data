@@ -13,4 +13,5 @@ interface CommonTreeRepository<E> {
     suspend fun deleteById(id: UUID)
     suspend fun deleteByTreeViewId(treeViewId: UUID)
     suspend fun <S : E> save(entity: S): E
+    suspend fun <S : E> saveAll(entities: List<S>): List<E>
 }
