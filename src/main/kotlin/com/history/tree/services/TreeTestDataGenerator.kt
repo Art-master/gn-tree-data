@@ -3,7 +3,6 @@ package com.history.tree.services
 import com.history.tree.model.Person
 import com.history.tree.model.Relationship
 import com.history.tree.model.Tree
-import com.history.tree.model.User
 import com.history.tree.repositories.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
@@ -22,8 +21,6 @@ class TreeTestDataGenerator(
     val personRepository: PersonRepository,
     val treeRepository: TreeRepository,
     val relationshipRepository: RelationshipRepository,
-    val userRepository: UserRepository,
-    val userRoleRepository: UserRoleRepository,
     //val passwordEncoder: PasswordEncoder,
 ) {
 
