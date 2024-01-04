@@ -2,7 +2,6 @@ package com.history.tree.controllers
 
 import com.history.tree.dto.TreeViewDto
 import com.history.tree.services.TreeViewService
-import kotlinx.coroutines.flow.Flow
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
@@ -15,9 +14,9 @@ class TreeViewController(val treeViewService: TreeViewService) {
         return treeViewService.findById(id)
     }
 
-    @GetMapping("get_by_tree_id")
-    suspend fun getAllByTreeId(@RequestParam id: Long): Flow<TreeViewDto> {
-        return treeViewService.findAllByTreeId(id)
+    @GetMapping("get_main_by_tree_id")
+    suspend fun findMainViewByTreeId(@RequestParam treeId: Long): TreeViewDto {
+        return treeViewService.findMainViewByTreeId(treeId)
     }
 
     @PatchMapping

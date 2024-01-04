@@ -22,6 +22,11 @@ class TreeViewService(
         return mapper.entityToDto(entity)
     }
 
+    suspend fun findMainViewByTreeId(treeId: Long): TreeViewDto {
+        val entity = repository.findByTreeIdAndIsMainExists(treeId)
+        return mapper.entityToDto(entity)
+    }
+
     suspend fun create(treeView: TreeViewDto, treeId: Long): TreeViewDto {
         val entity: TreeView = mapper.dtoToEntity(treeView, treeId)
         val saved = op.insert(entity.javaClass).usingAndAwait(entity)
@@ -36,9 +41,5 @@ class TreeViewService(
         val entity: TreeView = mapper.dtoToEntity(tree)
         val saved = repository.save(entity)
         return mapper.entityToDto(saved)
-    }
-
-    fun findAllByTreeId(id: Long): Flow<TreeViewDto> {
-        TODO("Not yet implemented")
     }
 }
