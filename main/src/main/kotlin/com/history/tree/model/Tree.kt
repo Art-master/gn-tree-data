@@ -9,16 +9,13 @@ import java.util.*
 data class Tree(
     @Id
     @Column("id")
-    val id: Long,
+    val id: Long?,
 
     @Column("name")
     val name: String,
 
     @Column("description")
-    val description: String,
-
-    @Column("main_tree_view_id")
-    val mainTreeViewId: UUID,
+    val description: String?,
 
     @Column("user_id")
     val userId: Long,

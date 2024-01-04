@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS tree
     name text NOT NULL,
     description character varying,
     user_id bigint NOT NULL,
-    main_tree_view_id uuid NOT NULL,
     CONSTRAINT tree_pkey PRIMARY KEY (id)
 );
 
@@ -23,6 +22,3 @@ COMMENT ON COLUMN tree.name
 
 COMMENT ON COLUMN tree.description
     IS 'Tree description';
-
-COMMENT ON COLUMN tree.main_tree_view_id
-    IS 'Tree main view identifier';

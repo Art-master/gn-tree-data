@@ -12,7 +12,8 @@ import java.util.*
 
 @Service
 class TreeViewService(
-    val repository: TreeViewRepository, val mapper: TreeViewMapper,
+    val repository: TreeViewRepository,
+    val mapper: TreeViewMapper,
     val op: FluentR2dbcOperations
 ) {
     suspend fun findById(id: UUID): TreeViewDto? {
@@ -22,7 +23,7 @@ class TreeViewService(
     }
 
     suspend fun create(treeView: TreeViewDto, treeId: Long): TreeViewDto {
-        val entity: TreeView = mapper.dtoToEntity(treeView)
+        val entity: TreeView = mapper.dtoToEntity(treeView, treeId)
         val saved = op.insert(entity.javaClass).usingAndAwait(entity)
         return mapper.entityToDto(saved)
     }

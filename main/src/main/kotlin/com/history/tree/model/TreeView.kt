@@ -9,16 +9,19 @@ import java.util.*
 data class TreeView(
     @Id
     @Column("id")
-    val id: Long,
+    val id: Long?,
 
     @Column("tree_id")
     val treeId: Long,
+
+    @Column("is_main")
+    val isMain: Boolean,
 
     @Column("name")
     val name: String,
 
     @Column("description")
-    val description: String,
+    val description: String?,
 
     @Column("color")
     val color: Int

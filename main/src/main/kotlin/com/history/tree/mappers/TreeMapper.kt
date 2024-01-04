@@ -9,6 +9,9 @@ import org.mapstruct.Mapping
 
 @Mapper(componentModel = "spring")
 interface TreeMapper : EntityMapper<Tree, TreeDto> {
+    @Mapping(source = "userId", target = "userId")
+    fun dtoToEntity(dto: TreeDto, userId: Long): Tree
+
     @Mapping(source = "treeView", target = "mainTreeView")
     fun entityToDto(@Context entity: Tree?, treeView: TreeViewDto): TreeDto
 }

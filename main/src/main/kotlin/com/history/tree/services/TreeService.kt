@@ -2,6 +2,7 @@ package com.history.tree.services
 
 import com.history.tree.dto.FullTreeDataDto
 import com.history.tree.dto.TreeDto
+import com.history.tree.extension.Auth
 import com.history.tree.mappers.TreeMapper
 import com.history.tree.model.Tree
 import com.history.tree.repositories.TreeRepository
@@ -41,16 +42,18 @@ class TreeService(
     }
 
     suspend fun findAllByUserId(id: Long): Flow<TreeDto> {
-        return repository.findAll()
-            .map { entity -> mapper.entityToDto(entity) } //TODO Use user id
+        val userId = Auth.getUserId()
+        return repository.findByUserId(userId)
+            .map { entity -> mapper.entityToDto(entity) }
     }
 
     @Transactional
     suspend fun create(tree: TreeDto): TreeDto {
-        val entity: Tree = mapper.dtoToEntity(tree)
+        val userId = Auth.getUserId()
+        val entity: Tree = mapper.dtoToEntity(tree, userId)
         val saved = op.insert(entity.javaClass).usingAndAwait(entity)
 
-        val treeView = treeViewService.create(tree.mainTreeView!!, saved.id)
+        val treeView = treeViewService.create(tree.mainTreeView!!, saved.id!!)
         return mapper.entityToDto(saved, treeView)
     }
 
@@ -59,7 +62,8 @@ class TreeService(
     }
 
     suspend fun edit(tree: TreeDto): TreeDto {
-        val entity: Tree = mapper.dtoToEntity(tree)
+        val userId = Auth.getUserId()
+        val entity: Tree = mapper.dtoToEntity(tree, userId)
         val saved = repository.save(entity)
         return mapper.entityToDto(saved)
     }

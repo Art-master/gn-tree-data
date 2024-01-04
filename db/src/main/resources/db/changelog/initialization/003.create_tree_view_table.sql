@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS tree_view
 (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     tree_id bigint NOT NULL,
+    is_main boolean NOT NULL DEFAULT FALSE,
     name text NOT NULL,
     description character varying,
     color integer NOT NULL,
