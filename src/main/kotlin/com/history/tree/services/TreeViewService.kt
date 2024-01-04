@@ -21,8 +21,8 @@ class TreeViewService(
         return mapper.entityToDto(entity)
     }
 
-    suspend fun create(tree: TreeViewDto): TreeViewDto {
-        val entity: TreeView = mapper.dtoToEntity(tree)
+    suspend fun create(treeView: TreeViewDto, treeId: Long): TreeViewDto {
+        val entity: TreeView = mapper.dtoToEntity(treeView)
         val saved = op.insert(entity.javaClass).usingAndAwait(entity)
         return mapper.entityToDto(saved)
     }

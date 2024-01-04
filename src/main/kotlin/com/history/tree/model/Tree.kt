@@ -9,7 +9,7 @@ import java.util.*
 data class Tree(
     @Id
     @Column("id")
-    val id: UUID,
+    val id: Long,
 
     @Column("name")
     val name: String,

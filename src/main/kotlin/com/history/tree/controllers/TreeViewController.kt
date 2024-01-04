@@ -26,8 +26,8 @@ class TreeViewController(val treeViewService: TreeViewService) {
     }
 
     @PostMapping
-    suspend fun create(@RequestBody tree: TreeViewDto): TreeViewDto {
-        return treeViewService.create(tree)
+    suspend fun create(@RequestParam treeId: Long, @RequestBody tree: TreeViewDto): TreeViewDto {
+        return treeViewService.create(tree, treeId)
     }
 
     @DeleteMapping

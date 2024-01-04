@@ -1,10 +1,8 @@
 package com.history.tree.dto
 
-import java.util.*
-
 data class TreeDto(
-    val id: UUID,
+    val id: Long?,
     val name: String,
-    val description: String,
-    val mainTreeView: TreeViewDto
+    val description: String?,
+    val mainTreeView: TreeViewDto?
 )

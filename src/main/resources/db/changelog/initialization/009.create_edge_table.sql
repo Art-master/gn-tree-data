@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS edge
 	x2 numeric,
     y2 numeric,
 	type integer,
-	tree_view_id uuid,
+	tree_view_id bigint NOT NULL,
     CONSTRAINT edge_pkey PRIMARY KEY (id),
     CONSTRAINT tree_view_id FOREIGN KEY (tree_view_id)
         REFERENCES tree_view (id) MATCH SIMPLE

@@ -9,10 +9,10 @@ import java.util.*
 data class TreeView(
     @Id
     @Column("id")
-    val id: UUID,
+    val id: Long,
 
     @Column("tree_id")
-    val treeId: UUID,
+    val treeId: Long,
 
     @Column("name")
     val name: String,

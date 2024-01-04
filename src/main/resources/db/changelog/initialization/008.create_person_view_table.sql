@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS person_view
     x numeric,
 	y numeric,
 	person_id uuid,
-	tree_view_id uuid,
+	tree_view_id bigint NOT NULL,
     CONSTRAINT person_view_pkey PRIMARY KEY (id),
     CONSTRAINT person_id FOREIGN KEY (person_id)
         REFERENCES person (id) MATCH SIMPLE

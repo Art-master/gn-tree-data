@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS relationship
     related_person_id uuid NOT NULL,
     relationship_type smallint NOT NULL,
     marriage_id uuid,
-    tree_view_id uuid,
+    tree_view_id bigint NOT NULL,
     CONSTRAINT relationship_pkey PRIMARY KEY (id),
     CONSTRAINT marriage_key FOREIGN KEY (marriage_id)
         REFERENCES marriage (id) MATCH SIMPLE

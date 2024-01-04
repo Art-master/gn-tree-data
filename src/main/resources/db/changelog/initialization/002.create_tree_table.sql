@@ -4,9 +4,9 @@
 
 CREATE TABLE IF NOT EXISTS tree
 (
-    id uuid NOT NULL,
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     name text NOT NULL,
-    description character varying NOT NULL,
+    description character varying,
     user_id bigint NOT NULL,
     main_tree_view_id uuid NOT NULL,
     CONSTRAINT tree_pkey PRIMARY KEY (id)

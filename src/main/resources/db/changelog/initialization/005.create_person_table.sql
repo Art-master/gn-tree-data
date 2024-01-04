@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS person
     first_name text,
     last_name text,
     patronymic text,
-    tree_view_id uuid,
+    tree_view_id bigint NOT NULL,
     gender "char" NOT NULL,
     birth_date date,
     date_of_death date,
