@@ -35,10 +35,6 @@ spring:
     properties:
       hibernate:
         default_schema: ${DB_SCHEMA:public}
-  liquibase:
-    change-log: classpath:db/changelog/root.xml
-    default-schema: ${DB_SCHEMA}
-    driver-class-name: org.postgresql.Driver
   main:
     allow-bean-definition-overriding: true
   r2dbc:

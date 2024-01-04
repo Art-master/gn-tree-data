@@ -1,20 +1,7 @@
 package com.history.tree.services
 
-import com.history.tree.model.Person
-import com.history.tree.model.Relationship
-import com.history.tree.model.Tree
 import com.history.tree.repositories.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.toList
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
-import java.util.*
-import java.util.concurrent.ThreadLocalRandom
-import java.util.concurrent.atomic.AtomicInteger
-import java.util.stream.Collectors
-import java.util.stream.IntStream
 
 @Service
 class TreeTestDataGenerator(

@@ -28,7 +28,7 @@
         KEYCLOAK_ADDR=http://localhost:8484
       ```
 6. start liquibase database initialisation by gradle command (replace values if needed): 
-   `gradle update -DDB_USER=postgres -DDB_PASSWORD=postgres -DDB_NAME=tree_data -DDB_HOST=localhost -DDB_PORT=5432`
+   `gradle :db:update -DDB_USER=postgres -DDB_PASSWORD=postgres -DDB_NAME=tree_data -DDB_HOST=localhost -DDB_PORT=5432`
 7. Also, you can add gradle `update` command in the run configuration ("before launch" section).
    After this manipulation liquibase will start before launch every time after you click the run button.
    Copy and paste in the "Arguments" field:

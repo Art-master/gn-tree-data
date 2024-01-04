@@ -52,9 +52,6 @@ R2DBCConfig : AbstractR2dbcConfiguration() {
     @Value("\${spring.datasource.url}")
     private lateinit var jdbcUrl: String
 
-    @Value("\${spring.liquibase.change-log}")
-    private lateinit var changeLog: String
-
     @Bean
     override fun connectionFactory(): ConnectionFactory {
         return ConnectionFactories.get(

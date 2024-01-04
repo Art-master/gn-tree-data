@@ -2,7 +2,7 @@ target/
 .gradle/
 !**/src/main/**/target/
 !**/src/test/**/target/
-/postgres-data/
+postgres-data/
 
 ### STS ###
 .apt_generated
