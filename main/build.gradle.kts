@@ -51,19 +51,19 @@ dependencies {
     implementation("org.springframework.security:spring-security-oauth2-jose:6.0.0")
 
     //Metrics
-    implementation("io.micrometer:micrometer-registry-prometheus:1.10.3")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.10.5")
 
     //Docs API
-    implementation("org.springdoc:springdoc-openapi-webflux-ui:1.6.14")
+    implementation("org.springdoc:springdoc-openapi-webflux-ui:1.6.15")
 
     //Kotlin
     val kotlinVersion = "1.8.10"
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
-    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.1")
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.2")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     //Kotlin + Reactor
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.1")
 
     //Mapping
     val mapstructVersion = "1.5.3.Final"
@@ -74,15 +74,16 @@ dependencies {
     implementation("io.opentracing.contrib:opentracing-spring-jaeger-cloud-starter:3.3.1")
 
     //Database
-    runtimeOnly("org.postgresql:postgresql:42.5.4")
-    runtimeOnly("io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE")
+    runtimeOnly("org.postgresql:r2dbc-postgresql:1.0.1.RELEASE")
+    runtimeOnly("org.postgresql:r2dbc-pool:1.0.1.RELEASE")
+    runtimeOnly("org.postgresql:r2dbc-spi:1.0.1.RELEASE")
 
-    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     //TESTS
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
-    testImplementation("org.springframework.security:spring-security-test:6.0.1")
-    testImplementation("io.projectreactor:reactor-test:3.5.2")
+    testImplementation("org.springframework.security:spring-security-test:6.0.2")
+    testImplementation("io.projectreactor:reactor-test:3.5.4")
 }
 
 tasks.withType<Test> {

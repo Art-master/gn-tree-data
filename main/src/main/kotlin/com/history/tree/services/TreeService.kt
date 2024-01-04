@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import okhttp3.internal.wait
 import org.springframework.data.r2dbc.core.FluentR2dbcOperations
 import org.springframework.data.r2dbc.core.usingAndAwait
+import org.springframework.r2dbc.connection.ConnectionFactoryUtils
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
