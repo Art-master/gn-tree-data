@@ -9,7 +9,11 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface TreeViewRepository : CoroutineCrudRepository<TreeView, UUID> {
+interface TreeViewRepository : CoroutineCrudRepository<TreeView, Long> {
+
     @Query("SELECT * FROM tree_view tv WHERE tv.tree_id=:treeId AND tv.is_main='true' LIMIT 1")
     fun findByTreeIdAndIsMainExists(@Param("treeId") treeId: Long): Flow<TreeView>
+
+    @Query("DELETE * FROM tree_view tv WHERE tv.tree_id=:treeId")
+    fun deleteAllByTreeId(@Param("treeId") treeId: Long)
 }

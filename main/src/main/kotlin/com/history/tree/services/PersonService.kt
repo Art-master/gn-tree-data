@@ -21,7 +21,7 @@ class PersonService(
         return mapper.entityToDto(saved)
     }
 
-    suspend fun deleteByTreeViewIdIfViewsNotFound(id: UUID) {
+    suspend fun deleteByTreeViewIdIfViewsNotFound(id: Long) {
         repository.deleteByTreeViewIdIfViewsNotFound(id)
     }
 }

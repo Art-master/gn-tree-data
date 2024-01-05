@@ -17,7 +17,7 @@ class TreeViewService(
     val mapper: TreeViewMapper,
     val op: FluentR2dbcOperations
 ) {
-    suspend fun findById(id: UUID): TreeViewDto? {
+    suspend fun findById(id: Long): TreeViewDto? {
         val entity = repository.findById(id)
         entity ?: return null
         return mapper.entityToDto(entity)
@@ -34,8 +34,12 @@ class TreeViewService(
         return mapper.entityToDto(saved)
     }
 
-    suspend fun delete(id: UUID) {
+    suspend fun delete(id: Long) {
         return repository.deleteById(id)
+    }
+
+    suspend fun deleteAllByTreeId(id: Long) {
+        return repository.deleteAllByTreeId(id)
     }
 
     suspend fun edit(tree: TreeViewDto): TreeViewDto {

@@ -10,7 +10,7 @@ import java.util.UUID
 class TreeViewController(val treeViewService: TreeViewService) {
 
     @GetMapping
-    suspend fun getById(@RequestParam id: UUID): TreeViewDto? {
+    suspend fun getById(@RequestParam id: Long): TreeViewDto? {
         return treeViewService.findById(id)
     }
 
@@ -30,7 +30,7 @@ class TreeViewController(val treeViewService: TreeViewService) {
     }
 
     @DeleteMapping
-    suspend fun delete(@RequestParam id: UUID) {
+    suspend fun delete(@RequestParam id: Long) {
         return treeViewService.delete(id)
     }
 }

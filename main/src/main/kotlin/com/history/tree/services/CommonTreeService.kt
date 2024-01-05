@@ -28,7 +28,7 @@ open class CommonTreeService<E, D>(
         return repository.deleteById(id)
     }
 
-    open suspend fun deleteByTreeViewId(treeViewId: UUID) {
+    open suspend fun deleteByTreeViewId(treeViewId: Long) {
         return repository.deleteByTreeViewId(treeViewId)
     }
 

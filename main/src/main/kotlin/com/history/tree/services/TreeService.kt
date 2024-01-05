@@ -35,7 +35,7 @@ class TreeService(
 
     val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    suspend fun findById(id: UUID): TreeDto? {
+    suspend fun findById(id: Long): TreeDto? {
         val entity = repository.findById(id)
         entity ?: return null
         return mapper.entityToDto(entity)
@@ -56,7 +56,8 @@ class TreeService(
         return mapper.entityToDto(saved)
     }
 
-    suspend fun delete(id: UUID) {
+    suspend fun delete(id: Long) {
+        treeViewService.deleteAllByTreeId(id)
         return repository.deleteById(id)
     }
 
@@ -68,7 +69,7 @@ class TreeService(
     }
 
     @Transactional
-    fun saveAll(treeViewId: UUID, treeData: FullTreeDataDto) {
+    fun saveAll(treeViewId: Long, treeData: FullTreeDataDto) {
         coroutineScope.launch {
             val deleteAllEntities = coroutineScope.launch {
                 personService.deleteByTreeViewIdIfViewsNotFound(treeViewId)

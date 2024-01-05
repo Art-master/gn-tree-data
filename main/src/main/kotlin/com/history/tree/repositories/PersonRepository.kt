@@ -15,5 +15,5 @@ import java.util.*
 interface PersonRepository : CommonTreeRepository<Person>, CoroutineCrudRepository<Person, UUID> {
 
     @Query("DELETE FROM $PERSON p WHERE $tree_view_id=:treeViewId AND NOT EXISTS (SELECT * FROM $PERSON_VIEW pv WHERE pv.$person_id=p.$id)")
-    suspend fun deleteByTreeViewIdIfViewsNotFound(treeViewId: UUID)
+    suspend fun deleteByTreeViewIdIfViewsNotFound(treeViewId: Long)
 }
