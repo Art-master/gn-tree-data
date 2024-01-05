@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder
 import org.springframework.security.oauth2.server.resource.authentication.*
 import org.springframework.security.web.server.SecurityWebFilterChain
+import org.springframework.web.cors.CorsConfiguration
 
 @Configuration
 @EnableWebFluxSecurity
@@ -37,6 +38,16 @@ class WebSecurityConfiguration {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .csrf().disable()
+                .cors {
+                    it.configurationSource {
+                        CorsConfiguration().apply {
+                            allowCredentials = false
+                            allowedOriginPatterns = listOf("http://localhost:3000")
+                            addAllowedMethod("*")
+                            addAllowedHeader("*")
+                        }
+                    }
+                } //TODO
         }
 
         return http.build()

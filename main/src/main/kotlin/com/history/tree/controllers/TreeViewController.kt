@@ -15,7 +15,7 @@ class TreeViewController(val treeViewService: TreeViewService) {
     }
 
     @GetMapping("get_main_by_tree_id")
-    suspend fun findMainViewByTreeId(@RequestParam treeId: Long): TreeViewDto {
+    suspend fun findMainViewByTreeId(@RequestParam("tree_id") treeId: Long): TreeViewDto {
         return treeViewService.findMainViewByTreeId(treeId)
     }
 
@@ -25,7 +25,7 @@ class TreeViewController(val treeViewService: TreeViewService) {
     }
 
     @PostMapping
-    suspend fun create(@RequestParam treeId: Long, @RequestBody tree: TreeViewDto): TreeViewDto {
+    suspend fun create(@RequestParam("tree_id") treeId: Long, @RequestBody tree: TreeViewDto): TreeViewDto {
         return treeViewService.create(tree, treeId)
     }
 

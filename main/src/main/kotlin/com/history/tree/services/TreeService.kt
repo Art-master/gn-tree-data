@@ -53,8 +53,7 @@ class TreeService(
         val entity: Tree = mapper.dtoToEntity(tree, userId)
         val saved = op.insert(entity.javaClass).usingAndAwait(entity)
 
-        val treeView = treeViewService.create(tree.mainTreeView!!, saved.id!!)
-        return mapper.entityToDto(saved, treeView)
+        return mapper.entityToDto(saved)
     }
 
     suspend fun delete(id: UUID) {

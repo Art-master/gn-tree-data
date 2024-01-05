@@ -5,6 +5,7 @@ import com.history.tree.mappers.TreeViewMapper
 import com.history.tree.model.TreeView
 import com.history.tree.repositories.TreeViewRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import org.springframework.data.r2dbc.core.FluentR2dbcOperations
 import org.springframework.data.r2dbc.core.usingAndAwait
 import org.springframework.stereotype.Service
@@ -23,8 +24,8 @@ class TreeViewService(
     }
 
     suspend fun findMainViewByTreeId(treeId: Long): TreeViewDto {
-        val entity = repository.findByTreeIdAndIsMainExists(treeId)
-        return mapper.entityToDto(entity)
+        val entities = repository.findByTreeIdAndIsMainExists(treeId)
+        return mapper.entityToDto(entities.firstOrNull()!!)
     }
 
     suspend fun create(treeView: TreeViewDto, treeId: Long): TreeViewDto {
